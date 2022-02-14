@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <link rel="stylesheet" href="hatch.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+<body>
+	<div id="container">
+		<div id="tabs">
+			<a class="tab" href="panel.html">
+				<img src="icons/grid-svgrepo-com.svg" />
+				<span class="tab_label">
+					Type
+				</span>	
+			</a>
+			<a class="tab" href="panel2.html">
+				<img src="icons/cog-svgrepo-com.svg" />
+				<span class="tab_label">
+					Settings
+				</span>
+			</a>
+			<a class="tab active" href="panel3.html">
+				<img src="icons/window-content-svgrepo-com.svg" />
+				<span class="tab_label">
+					Content
+				</span>
+			</a>
+			<a class="tab" href="panel4.html">
+				<img src="icons/test-tube-svgrepo-com.svg" />
+				<span class="tab_label">
+					Test
+				</span>
+			</a>
+			<a class="tab" href="panel5.html">
+				<img src="icons/save-svgrepo-com.svg" />
+				<span class="tab_label">
+					Publish
+				</span>
+			</a>
+		</div>
+		<div id="headerbar">
+			<h1>Identify Content</h1>
+			<div class="pill">
+				Unsaved
+			</div>
+			<p class="steps">Step 3/5</p>
+			<a class="button previous" href="panel2.html">
+				Previous step
+			</a>
+			<a class="button" href="panel4.html">
+				Next step
+			</a>
+		</div>
+		<div id="content" class="columns">
+			<div class="column">
+				<div class="column_inner">
+					<label>
+						Slot group name
+					</label>
+					<select type="text">
+						<option>Hero Banner</option>
+						<option>Featured Products</option>
+					</select>
+					<label>
+						Slot group type
+					</label>
+					<select type="text">
+						<option>Banner</option>
+						<option>Product</option>
+					</select>
+					<div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">Slots identified</p>
+						</div>
+						<div>
+							<span class="slot_number">
+								12
+							</span>
+						</div>
+						<div>
+							<img src="icons/eye-svgrepo-com.svg" />
+						</div>
+						<div>
+							<img src="icons/cog-svgrepo-com.svg" />
+						</div>
+						<div style="padding-right:10px">
+							<img src="icons/x-svgrepo-com.svg" />
+						</div>
+					</div>
+					<div class="is_carousel">
+						<input type="checkbox">
+						<span>Is a carousel</span>
+					</div>
+					<div class="find_slots">
+						<a class="button">
+							<img src="icons/pointer-svgrepo-com-white.svg" />
+							<span>
+								Click
+							</span>
+						</a>
+						<a class="button">
+							<img src="icons/code-svgrepo-com-white.svg" />
+							<span>
+								Enter
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="column_inner">
+					<div class="add_group">
+						<img src="icons/plus-svgrepo-com.svg">
+						<span style="padding-left: 10px;">
+							Add another slot group
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="messaging.js"></script>
+	<script src="panel.js"></script>
+</body>
+</html>

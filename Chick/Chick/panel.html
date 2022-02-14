@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <link rel="stylesheet" href="hatch.css">
+  </head>
+<body>
+	<div id="container">
+		<div id="tabs">
+			<a id="type" class="tab active" href="panel.html">
+				<img src="icons/grid-svgrepo-com.svg" />
+				<span class="tab_label">
+					Type
+				</span>	
+			</a>
+			<a class="tab" href="panel2.html">
+				<img src="icons/cog-svgrepo-com.svg" />
+				<span class="tab_label">
+					Settings
+				</span>
+			</a>
+			<a class="tab" href="panel3.html">
+				<img src="icons/window-content-svgrepo-com.svg" />
+				<span class="tab_label">
+					Content
+				</span>
+			</a>
+			<a class="tab" href="panel4.html">
+				<img src="icons/test-tube-svgrepo-com.svg" />
+				<span class="tab_label">
+					Test
+				</span>
+			</a>
+			<a class="tab" href="panel5.html">
+				<img src="icons/save-svgrepo-com.svg" />
+				<span class="tab_label">
+					Publish
+				</span>
+			</a>
+		</div>
+		<div id="headerbar">
+			<h1>Choose scrape type</h1>
+			<p class="steps">Step 1/5</p>
+			<a class="button" href="panel2.html">
+				Next step
+			</a>
+		</div>
+		<div id="content">
+			<div class="scrape_types">
+				<div class="scrape_type active">
+					<img class="scrape_type_icon" src="images/icon-brand_prominence-noshadow.png" />
+					<p>
+						Brand Prominence
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+				<div class="scrape_type">
+					<img class="scrape_type_icon" src="images/apple-pay-icon.png" />
+					<p>
+						Apple Pay
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+				<div class="scrape_type">
+					<img class="scrape_type_icon" src="images/icon-stock_and_shipping-noshadow.png" />
+					<p>
+						Stock &amp; Delivery
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="panel.js"></script>
+</body>
+</html>

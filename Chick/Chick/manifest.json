@@ -1,0 +1,31 @@
+{
+    "name": "Magpie Hatchery",
+    "version": "1.0",
+    "description": "Magpie DBX point and click scrape builder",
+    "devtools_page": "devtools.html",
+    "background": {
+        "background.service_worker": [
+            "background.js"
+        ]
+    },
+    "action": {
+        "default_icon": {
+            "16": "/images/icon-brand_prominence-noshadow.png",
+            "32": "/images/icon-brand_prominence-noshadow.png",
+            "48": "/images/icon-brand_prominence-noshadow.png",
+            "128": "/images/icon-brand_prominence-noshadow.png"
+        }
+    },
+    "icons": {
+    "16": "/images/icon-brand_prominence-noshadow.png",
+    "32": "/images/icon-brand_prominence-noshadow.png",
+    "48": "/images/icon-brand_prominence-noshadow.png",
+    "128": "/images/icon-brand_prominence-noshadow.png"
+    },
+    "permissions": [
+        "tabs", 
+        "activeTab",
+        "scripting"
+    ],
+    "manifest_version": 3
+}
