@@ -1,13 +1,27 @@
-{
-    "name": "Magpie Hatchery",
+{   "manifest_version": 3,
     "version": "1.0",
+    "name": "Magpie Hatchery",    
     "description": "Magpie DBX point and click scrape builder",
     "devtools_page": "devtools.html",
+    "permissions": [
+      "storage",
+      "tabs", 
+      "activeTab",
+      "scripting",
+      "notifications",
+      "downloads",
+      "unlimitedStorage",
+      "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "optional_permissions": [
+    "clipboardWrite"
+  ],
     "background": {
-        "background.service_worker": [
-            "background.js"
-        ]
-    },
+        "service_worker": "js/service_worker.js"
+      },
     "action": {
         "default_icon": {
             "16": "/images/icon-brand_prominence-noshadow.png",
@@ -17,15 +31,20 @@
         }
     },
     "icons": {
-    "16": "/images/icon-brand_prominence-noshadow.png",
-    "32": "/images/icon-brand_prominence-noshadow.png",
-    "48": "/images/icon-brand_prominence-noshadow.png",
-    "128": "/images/icon-brand_prominence-noshadow.png"
-    },
-    "permissions": [
-        "tabs", 
-        "activeTab",
-        "scripting"
-    ],
-    "manifest_version": 3
+          "16": "/images/icon-brand_prominence-noshadow.png",
+          "32": "/images/icon-brand_prominence-noshadow.png",
+          "48": "/images/icon-brand_prominence-noshadow.png",
+          "128": "/images/icon-brand_prominence-noshadow.png"
+          },
+    
+    
+    "content_scripts": [
+		{
+		  "js": ["js/content_script.js"],
+		  "matches": ["<all_urls>"],
+		  "match_about_blank": true,
+		  "all_frames": false,
+		  "run_at": "document_start"
+		}
+	  ]
 }

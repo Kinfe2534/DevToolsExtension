@@ -8,6 +8,30 @@
 //   tabId: [Automatically added]
 // }
 
+function createChannel() {
+            // Create a connection to the background page
+    var backgroundPageConnection = chrome.runtime.connect({
+       // name: "init"
+    });
+
+  backgroundPageConnection.postMessage({
+    //  name: 'init',
+      cmd:"log",
+      tabId: chrome.devtools.inspectedWindow.tabId
+  });
+
+   
+    // Listen to messages from the background page
+    backgroundPageConnection.onMessage.addListener(function (message) {
+        document.querySelector('#insertmessagebutton').innerHTML = message.content;
+        // port.postMessage(message);
+      });
+}
+document.getElementById("brand_prominence").addEventListener('click',function(){
+  createChannel();
+})
+// original code below
+/*
 (function createChannel() {
     //Create a port with background page for continous message communication
     var port = chrome.extension.connect({
@@ -21,10 +45,11 @@
     });
 
 }());
-
+*/
 // This sends an object to the background page 
 // where it can be relayed to the inspected page
 function sendObjectToInspectedPage(message) {
     message.tabId = chrome.devtools.inspectedWindow.tabId;
     chrome.extension.sendMessage(message);
 }
+//
