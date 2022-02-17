@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <link rel="stylesheet" href="hatch.css">
+  </head>
+<body>
+	<div id="container">
+	<div id="tabs">
+		<div id="type" class="tab active">
+			<img src="icons/grid-svgrepo-com.svg" />
+			<span class="tab_label">
+				Type
+			</span>	
+		</div>
+		<div class="tab" id="settings_tab">
+			<img src="icons/cog-svgrepo-com.svg" />
+			<span class="tab_label">
+				Settings
+			</span>
+		</div>
+		<div class="tab" id="content_tab">
+			<img src="icons/window-content-svgrepo-com.svg" />
+			<span class="tab_label">
+				Content
+			</span>
+		</div>
+		<div class="tab" id="test_tab">
+			<img src="icons/test-tube-svgrepo-com.svg" />
+			<span class="tab_label">
+				Test
+			</span>
+		</div>
+		<div class="tab" id="publish_tab">
+			<img src="icons/save-svgrepo-com.svg" />
+			<span class="tab_label">
+				Publish
+			</span>
+		</div>
+	</div>
+    <div id="panel1" style="display: block;">
+		<div id="headerbar">
+			<h1>Choose scrape type</h1>
+			<p class="steps">Step 1/5</p>
+			<a class="button" href="panel2.html" id="panel1_next_step">
+				Next step
+			</a>
+		</div>
+		<div id="content">
+			<div class="scrape_types">
+				<div class="scrape_type" id="brand_prominence">
+					<img class="scrape_type_icon" src="images/icon-brand_prominence-noshadow.png" />
+					<p>
+						Brand Prominence
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+				<div class="scrape_type" id="apple_pay">
+					<img class="scrape_type_icon" src="images/apple-pay-icon.png" />
+					<p>
+						Apple Pay
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+				<div class="scrape_type" id="stock_&_delivery">
+					<img class="scrape_type_icon" src="images/icon-stock_and_shipping-noshadow.png" />
+					<p>
+						Stock &amp; Delivery
+					</p>
+					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
+				</div>
+			</div>
+		</div>
+    </div>
+    <div id="panel2" style="display: none;">
+		<div id="headerbar">
+			<h1>Page Setup</h1>
+			<div class="pill">
+				Unsaved
+			</div>
+			<p class="steps">Step 2/5</p>
+			<a class="button previous" href="panel.html">
+				Previous step
+			</a>
+			<a class="button" href="panel3.html">
+				Next step
+			</a>
+		</div>
+		<div id="content">
+			<div class="columns">
+				<div class="column">
+					<div class="column_inner">
+						<label>
+							URL
+						</label>
+						<input type="text" disabled value="https:/www.bestbuy.com" />
+						<label>
+							Page resolution
+						</label>
+						<div class="resolutions">
+							<a class="resolution active">Deskop</a>
+							<a class="resolution" style="margin-left:1%">Mobile</a>
+						</div>
+					</div>
+				</div>
+				<div class="column">
+					<div class="column_inner">
+						<label>
+							Select country
+						</label>
+						<select type="text">
+							<option>United Kingdom</option>
+							<option>USA</option>
+						</select>
+						<label>
+							Retailer
+						</label>
+						<select type="text">
+							<option>Walmart</option>
+							<option>Bestbuy</option>
+						</select>
+					</div>
+				</div>
+				<div class="column">
+					<div class="column_inner">
+						<label>
+							Capcha settings
+						</label>
+						<select type="text">
+							<option>Config Set 1</option>
+							<option>Config Set 2</option>
+						</select>
+						<label>
+							Proxy settings
+						</label>
+						<select type="text">
+							<option>Config Set 1</option>
+							<option>Config Set 2</option>
+						</select>
+					</div>
+				</div>
+			</div>			
+		</div>
+    </div>
+    <div id="panel3" style="display: none;">        
+		<div id="headerbar">
+			<h1>Identify Content</h1>
+			<div class="pill">
+				Unsaved
+			</div>
+			<p class="steps">Step 3/5</p>
+			<a class="button previous" href="panel2.html">
+				Previous step
+			</a>
+			<a class="button" href="panel4.html">
+				Next step
+			</a>
+		</div>
+		<div id="content" class="columns">
+			<div class="column">
+				<div class="column_inner">
+					<label>
+						Slot group name
+					</label>
+					<select type="text">
+						<option>Hero Banner</option>
+						<option>Featured Products</option>
+					</select>
+					<label>
+						Slot group type
+					</label>
+					<select type="text">
+						<option>Banner</option>
+						<option>Product</option>
+					</select>
+					<div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">Slots identified</p>
+						</div>
+						<div>
+							<span class="slot_number">
+								12
+							</span>
+						</div>
+						<div>
+							<img src="icons/eye-svgrepo-com.svg" />
+						</div>
+						<div>
+							<img src="icons/cog-svgrepo-com.svg" />
+						</div>
+						<div style="padding-right:10px">
+							<img src="icons/x-svgrepo-com.svg" />
+						</div>
+					</div>
+					<div class="is_carousel">
+						<input type="checkbox">
+						<span>Is a carousel</span>
+					</div>
+					<div class="find_slots">
+						<a class="button">
+							<img src="icons/pointer-svgrepo-com-white.svg" />
+							<span>
+								Click
+							</span>
+						</a>
+						<a class="button">
+							<img src="icons/code-svgrepo-com-white.svg" />
+							<span>
+								Enter
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="column_inner">
+					<div class="add_group">
+						<img src="icons/plus-svgrepo-com.svg">
+						<span style="padding-left: 10px;">
+							Add another slot group
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div id="panel4" style="display: none;">        
+		<div id="headerbar">
+			<h1>Run scrape test</h1>
+			<div class="pill">
+				Unsaved
+			</div>
+			<p class="steps">Step 4/5</p>
+			<a class="button previous" href="panel3.html">
+				Previous step
+			</a>
+			<a class="button" href="panel5.html">
+				Next step
+			</a>
+		</div>
+		<div id="content" class="columns">
+			<div class="column">
+				<div class="column_inner">
+					<a class="button">
+            Run Test
+          </a>
+				</div>
+			</div>
+			<div class="output">
+				<div class="column_inner">
+					<div class="add_group">
+						
+				</div>
+			</div>
+		</div>
+	</div>
+
+    </div>
+    <div id="panel5" style="display: none;">
+        
+		<div id="headerbar">
+			<h1>Save and Publish</h1>
+			<div class="pill saved">
+				Saved
+			</div>
+			<p class="steps">Step 5/5</p>
+			<a class="button previous" href="panel4.html">
+				Previous step
+			</a>
+		</div>
+		<div id="content" class="columns">
+			<div class="column">
+				<div class="column_inner">
+					<div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">
+                Hero banner slots
+                <span class="slot_info">
+                  Is a carousel
+                </span>
+              </p>
+						</div>
+						<div>
+							<span class="slot_number">
+								3 slots
+							</span>
+						</div>
+					</div>
+          <div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">Featured product slots</p>
+						</div>
+						<div>
+							<span class="slot_number">
+								12 slots
+							</span>
+						</div>
+					</div>
+          <div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">Recommended product slots</p>
+						</div>
+						<div>
+							<span class="slot_number">
+								3 slots
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="output">
+				<div class="column_inner">
+					<a class="button">
+            Save
+					</a>
+          <p>
+            <a href="#">
+              View in Magpie Hatchery Admin
+            </a>
+          </p>
+				</div>
+			</div>
+		</div>
+
+    </div>
+	</div>
+	<script src="js/panel_common.js"></script>
+	<script src="js/panel.js"></script>
+	
+</body>
+</html>

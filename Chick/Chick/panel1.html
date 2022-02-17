@@ -40,27 +40,27 @@
 		<div id="headerbar">
 			<h1>Choose scrape type</h1>
 			<p class="steps">Step 1/5</p>
-			<a class="button" href="panel2.html">
+			<a class="button" href="panel2.html" id="panel1_next_step">
 				Next step
 			</a>
 		</div>
 		<div id="content">
 			<div class="scrape_types">
-				<div class="scrape_type active" id="brand_prominence">
+				<div class="scrape_type" id="brand_prominence">
 					<img class="scrape_type_icon" src="images/icon-brand_prominence-noshadow.png" />
 					<p>
 						Brand Prominence
 					</p>
 					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
 				</div>
-				<div class="scrape_type">
+				<div class="scrape_type" id="apple_pay">
 					<img class="scrape_type_icon" src="images/apple-pay-icon.png" />
 					<p>
 						Apple Pay
 					</p>
 					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
 				</div>
-				<div class="scrape_type">
+				<div class="scrape_type" id="stock_&_delivery">
 					<img class="scrape_type_icon" src="images/icon-stock_and_shipping-noshadow.png" />
 					<p>
 						Stock &amp; Delivery
@@ -70,8 +70,8 @@
 			</div>
 		</div>
 	</div>
-	<script src="js/messaging.js"></script>
-	<script src="js/panel.js"></script>
+	<script src="js/panel_common.js"></script>
+	<script src="js/panel1.js"></script>
 	
 </body>
 </html>

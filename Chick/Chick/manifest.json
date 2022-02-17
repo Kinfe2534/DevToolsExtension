@@ -40,7 +40,7 @@
     
     "content_scripts": [
 		{
-		  "js": ["js/content_script.js"],
+		  "js": ["js/jquery.js","js/content_script.js"],
 		  "matches": ["<all_urls>"],
 		  "match_about_blank": true,
 		  "all_frames": false,
