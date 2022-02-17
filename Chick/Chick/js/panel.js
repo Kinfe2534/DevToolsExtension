@@ -1,71 +1,74 @@
-
-document.getElementById("brand_prominence").addEventListener("click",function(){
-    if(document.getElementsByClassName("scrape_type active")[0]!=undefined){
-        document.getElementsByClassName("scrape_type active")[0].setAttribute('class',"scrape_type");}
-    this.setAttribute('class',"scrape_type active");
+// choose type of scrape listeners
+$("#brand_prominence").click(function(){
+    $(".scrape_type.active").removeClass("active");
+    $(this).addClass("active");
 });
-document.getElementById("apple_pay").addEventListener("click",function(){
-    if(document.getElementsByClassName("scrape_type active")[0]!=undefined){
-    document.getElementsByClassName("scrape_type active")[0].setAttribute('class',"scrape_type");}
-    this.setAttribute('class',"scrape_type active");
+$("#apple_pay").click(function(){
+    $(".scrape_type.active").removeClass("active");
+    $(this).addClass("active");
 });
-document.getElementById("stock_&_delivery").addEventListener("click",function(){
-    if(document.getElementsByClassName("scrape_type active")[0]!=undefined){
-    document.getElementsByClassName("scrape_type active")[0].setAttribute('class',"scrape_type");}
-    this.setAttribute('class',"scrape_type active");
+$("#stock_delivery").click(function(){
+    $(".scrape_type.active").removeClass("active");
+    $(this).addClass("active");
 });
-document.getElementById('panel1_next_step').addEventListener("click",function(){
-    
-    
+// tab change listeners
+$("#type").click(function(){
+    $(".tab.active").removeClass("active");
+    $(this).addClass("active");
+    $(".panel.active").removeClass("active");
+    $("#panel1").addClass("active");
 });
-// tab event listeners
-
-document.getElementById("type").addEventListener("click",function(){
-    if(document.getElementsByClassName("tab active")[0]!=undefined){
-      //  document.getElementsByClassName("tab active")[0].style.display='none';
-        document.getElementsByClassName("tab active")[0].setAttribute('class',"tab");
-            
-    }
-        this.setAttribute('class',"tab active");
-        document.getElementById("panel1").style.display='block';    
+$("#settings_tab").click(function(){
+    $(".tab.active").removeClass("active");
+    $(this).addClass("active");
+    $(".panel.active").removeClass("active");
+    $("#panel2").addClass("active");    
 });
-document.getElementById("settings_tab").addEventListener("click",function(){    
-    if(document.getElementsByClassName("tab active")[0]!=undefined){
-     //   document.getElementsByClassName("tab active")[0].style.display='none';
-        document.getElementsByClassName("tab active")[0].setAttribute('class',"tab");
-                    
-    }
-        this.setAttribute('class',"tab active");
-        document.getElementById("panel2").style.display='block';    
+$("#content_tab").click(function(){
+    $(".tab.active").removeClass("active");
+    $(this).addClass("active");
+    $(".panel.active").removeClass("active");
+    $("#panel3").addClass("active");
 });
-document.getElementById("content_tab").addEventListener("click",function(){
-    if(document.getElementsByClassName("tab active")[0]!=undefined){
-     //   document.getElementsByClassName("tab active")[0].style.display='none';
-        document.getElementsByClassName("tab active")[0].setAttribute('class',"tab");
-                   
-    }
-        this.setAttribute('class',"tab active");
-        document.getElementById("panel3").style.display='block';    
-    
+$("#test_tab").click(function(){
+    $(".tab.active").removeClass("active");
+    $(this).addClass("active");
+    $(".panel.active").removeClass("active");
+    $("#panel4").addClass("active");
 });
-document.getElementById("test_tab").addEventListener("click",function(){
-    if(document.getElementsByClassName("tab active")[0]!=undefined){
-     //   document.getElementsByClassName("tab active")[0].style.display='none';
-        document.getElementsByClassName("tab active")[0].setAttribute('class',"tab");
-        
-    }
-        this.setAttribute('class',"tab active");
-        document.getElementById("panel4").style.display='block';    
-    
+$("#publish_tab").click(function(){
+    $(".tab.active").removeClass("active");
+    $(this).addClass("active");
+    $(".panel.active").removeClass("active");
+    $("#panel5").addClass("active");
 });
-document.getElementById("publish_tab").addEventListener("click",function(){
-    if(document.getElementsByClassName("tab active")[0]!=undefined){
-        //document.getElementsByClassName("tab active")[0].style.display='none';
-        document.getElementsByClassName("tab active")[0].setAttribute('class',"tab");
-              
-    }
-        this.setAttribute('class',"tab active");
-        document.getElementById("panel5").style.display='block';
-    
-    
+// previous and next steps listeners
+// panel 1
+$("#panel1_next_step").click(function(){
+    $("#settings_tab").click();
+    });
+// panel 2
+$("#panel2_previous_step").click(function(){
+    $("#type").click();
+    });
+$("#panel2_next_step").click(function(){
+    $("#content_tab").click();
 });
+// panel 3
+$("#panel3_previous_step").click(function(){
+    $("#settings_tab").click();
+    });
+$("#panel3_next_step").click(function(){
+    $("#test_tab").click();
+});
+// panel 4
+$("#panel4_previous_step").click(function(){
+    $("#content_tab").click();
+    });
+$("#panel4_next_step").click(function(){
+    $("#publish_tab").click();
+});
+// panel 5
+$("#panel5_previous_step").click(function(){
+    $("#test_tab").click();
+    });

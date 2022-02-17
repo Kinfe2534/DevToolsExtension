@@ -377,3 +377,41 @@ span.slot_info {
   align-items: center;
   color:rgba(24,132,122, 1)
 }
+.panel.active {
+  display: block;
+}
+.panel {
+  display: none;
+}
+
+button.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: static;
+  padding: 8px 12px 8px 12px;
+  text-decoration: none;
+  color: #fff;
+  /* Emerald green */
+  opacity: 0.8;
+  background: #18847A;
+  border-radius: 4px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 4;
+  align-self: stretch;
+  flex-grow: 0;
+  margin: 0px 10px 0px 10px;
+}
+
+button.button:hover {
+  opacity: 1;
+}
+
+button.button.previous {
+  background-color: #6C7981;
+}

@@ -31,7 +31,7 @@ document.getElementById("brand_prominence").addEventListener('click',function(){
 document.getElementById("apple_pay").addEventListener("click",function(){
 
 });
-document.getElementById("stock_&_delivery").addEventListener("click",function(){
+document.getElementById("stock_delivery").addEventListener("click",function(){
   
 });
 function makePost(){

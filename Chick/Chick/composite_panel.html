@@ -37,13 +37,13 @@
 			</span>
 		</div>
 	</div>
-    <div id="panel1" style="display: block;">
+    <div id="panel1" class="panel active">
 		<div id="headerbar">
 			<h1>Choose scrape type</h1>
 			<p class="steps">Step 1/5</p>
-			<a class="button" href="panel2.html" id="panel1_next_step">
+			<button class="button"  id="panel1_next_step">
 				Next step
-			</a>
+			</button>
 		</div>
 		<div id="content">
 			<div class="scrape_types">
@@ -61,7 +61,7 @@
 					</p>
 					<img src="icons/check-svgrepo-com.svg" class="check_icon" />
 				</div>
-				<div class="scrape_type" id="stock_&_delivery">
+				<div class="scrape_type" id="stock_delivery">
 					<img class="scrape_type_icon" src="images/icon-stock_and_shipping-noshadow.png" />
 					<p>
 						Stock &amp; Delivery
@@ -71,19 +71,19 @@
 			</div>
 		</div>
     </div>
-    <div id="panel2" style="display: none;">
+    <div id="panel2" class="panel" >
 		<div id="headerbar">
 			<h1>Page Setup</h1>
 			<div class="pill">
 				Unsaved
 			</div>
 			<p class="steps">Step 2/5</p>
-			<a class="button previous" href="panel.html">
+			<button class="button previous" id="panel2_previous_step">
 				Previous step
-			</a>
-			<a class="button" href="panel3.html">
+			</button>
+			<button class="button" id="panel2_next_step">
 				Next step
-			</a>
+			</button>
 		</div>
 		<div id="content">
 			<div class="columns">
@@ -141,19 +141,19 @@
 			</div>			
 		</div>
     </div>
-    <div id="panel3" style="display: none;">        
+    <div id="panel3" class="panel" >        
 		<div id="headerbar">
 			<h1>Identify Content</h1>
 			<div class="pill">
 				Unsaved
 			</div>
 			<p class="steps">Step 3/5</p>
-			<a class="button previous" href="panel2.html">
+			<button class="button previous" id="panel3_previous_step">
 				Previous step
-			</a>
-			<a class="button" href="panel4.html">
+			</button>
+			<button class="button" id="panel3_next_step">
 				Next step
-			</a>
+			</button>
 		</div>
 		<div id="content" class="columns">
 			<div class="column">
@@ -226,19 +226,19 @@
 			</div>
 		</div>
     </div>
-    <div id="panel4" style="display: none;">        
+    <div id="panel4" class="panel" >        
 		<div id="headerbar">
 			<h1>Run scrape test</h1>
 			<div class="pill">
 				Unsaved
 			</div>
 			<p class="steps">Step 4/5</p>
-			<a class="button previous" href="panel3.html">
+			<button class="button previous" id="panel4_previous_step">
 				Previous step
-			</a>
-			<a class="button" href="panel5.html">
+			</button>
+			<button class="button" id="panel4_next_step">
 				Next step
-			</a>
+			</button>
 		</div>
 		<div id="content" class="columns">
 			<div class="column">
@@ -258,7 +258,7 @@
 	</div>
 
     </div>
-    <div id="panel5" style="display: none;">
+    <div id="panel5" class="panel" >
         
 		<div id="headerbar">
 			<h1>Save and Publish</h1>
@@ -266,9 +266,9 @@
 				Saved
 			</div>
 			<p class="steps">Step 5/5</p>
-			<a class="button previous" href="panel4.html">
+			<button class="button previous" id="panel5_previous_step">
 				Previous step
-			</a>
+			</button>
 		</div>
 		<div id="content" class="columns">
 			<div class="column">
@@ -335,6 +335,7 @@
 
     </div>
 	</div>
+	<script src="js/jquery.js"></script>
 	<script src="js/panel_common.js"></script>
 	<script src="js/panel.js"></script>
 	
