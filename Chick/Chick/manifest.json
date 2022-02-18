@@ -20,7 +20,7 @@
     "clipboardWrite"
   ],
     "background": {
-        "service_worker": "js/service_worker.js"
+        "service_worker": "js/background_service_worker.js"
       },
     "action": {
         "default_icon": {

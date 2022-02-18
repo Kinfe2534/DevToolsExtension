@@ -17,20 +17,13 @@ var connections = {};
 
 chrome.runtime.onConnect.addListener(function (port) {
 
-    var extensionListener = function (message, sender, sendResponse) {
+    var extensionListener = function (request, sender, sendResponse) {
 
-        // The original connection event doesn't include the tab ID of the
-        // DevTools page, so we need to send it explicitly.
-      //  if (message.name == "init") {
-         // connections[message.tabId] = port;
-        //  return;
-       // }
-
-	// other message handling
+       
   
       try {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-          chrome.tabs.sendMessage(tabs[0].id,{cmd:"log",content:"message to log from dev tools with tab id..."}, function(response) {
+          chrome.tabs.sendMessage(tabs[0].id,{cmd:request.cmd,content:request.content}, function(response) {
         
           });
         })
@@ -43,7 +36,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
     // Listen to messages sent from the DevTools page
     port.onMessage.addListener(extensionListener);
-
+/*
     port.onDisconnect.addListener(function(port) {
         port.onMessage.removeListener(extensionListener);
 
@@ -54,7 +47,7 @@ chrome.runtime.onConnect.addListener(function (port) {
             break;
           }
         }
-    });
+    });*/
 });
 
 // Receive message from content script and relay to the devTools page for the
