@@ -20,7 +20,7 @@
     "clipboardWrite"
   ],
     "background": {
-        "service_worker": "js/background_service_worker.js"
+        "service_worker": "js/background.js"
       },
     "action": {
         "default_icon": {
@@ -40,7 +40,7 @@
     
     "content_scripts": [
 		{
-		  "js": ["js/jquery.js","js/content_script.js"],
+		  "js": ["js/jquery.js","js/content.js"],
 		  "matches": ["<all_urls>"],
 		  "match_about_blank": true,
 		  "all_frames": false,

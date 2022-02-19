@@ -97,8 +97,8 @@
 							Page resolution
 						</label>
 						<div class="resolutions">
-							<a class="resolution active">Deskop</a>
-							<a class="resolution" style="margin-left:1%">Mobile</a>
+							<div class="resolution active" id="desktop">Deskop</div>
+							<div class="resolution" style="margin-left:1%" id="mobile">Mobile</div>
 						</div>
 					</div>
 				</div>
@@ -107,16 +107,16 @@
 						<label>
 							Select country
 						</label>
-						<select type="text">
-							<option>United Kingdom</option>
-							<option>USA</option>
+						<select type="text" id="country">
+							<option value="United Kingdom" selected>United Kingdom</option>
+							<option value="USA">USA</option>
 						</select>
 						<label>
 							Retailer
 						</label>
-						<select type="text">
-							<option>Walmart</option>
-							<option>Bestbuy</option>
+						<select type="text" id="retailer">
+							<option value="Walmart" selected>Walmart</option>
+							<option value="BestBuy">Bestbuy</option>
 						</select>
 					</div>
 				</div>
@@ -161,14 +161,14 @@
 					<label>
 						Slot group name
 					</label>
-					<select type="text">
+					<select type="text" id="slot_group_name">
 						<option>Hero Banner</option>
 						<option>Featured Products</option>
 					</select>
 					<label>
 						Slot group type
 					</label>
-					<select type="text">
+					<select type="text" id="slot_group_type">
 						<option>Banner</option>
 						<option>Product</option>
 					</select>

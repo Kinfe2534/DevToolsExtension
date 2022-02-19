@@ -1,111 +1,101 @@
 
 // Create a connection to the background page
-var json_file_obj={};
+var json_file_obj={
+  id:null,
+  scrapeType:null,
+  url:null,
+  Url_name:null,
+  Partner_homepage_url:null,
+  Partner_name:"Walmart",
+  partner_country:"United Kingdom",
+  partner_country_id:"UK",
+  resolution:null,
+  slots:[]
 
-//
+};
+var start_cmd={cmd:"start",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
+var log_cmd={cmd:"log",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
+
 var backgroundPageConnection = chrome.runtime.connect({
-    // name: "init"
+   name: "init"
   });
-
+  // initially send the tab id
 backgroundPageConnection.postMessage({
-  //  name: 'init',
-    cmd:"log",
-    tabId: chrome.devtools.inspectedWindow.tabId
+    cmd:"onConnect",
+    tabId:chrome.devtools.inspectedWindow.tabId,
+    content: `${JSON.stringify(json_file_obj)}`
 });  
   // Listen to messages from the background page
-  backgroundPageConnection.onMessage.addListener(function (message) {
-      document.querySelector('#insertmessagebutton').innerHTML = message.content;
-      // port.postMessage(message);
+  backgroundPageConnection.onMessage.addListener(function (request) {
+    if(request.cmd=="settings"){
+      json_file_obj["url"]=`${JSON.stringify(request.url)}`;
+      json_file_obj.Url_name=`${JSON.stringify(request.Url_name)}`;
+      json_file_obj.Partner_homepage_url=`${JSON.stringify(request.Partner_homepage_url)}`;
+      json_file_obj.resolution=`${JSON.stringify(request.resolution)}`
+
+    }
+    else if(request.cmd=="window_size_changed"){
+      
+      json_file_obj.resolution=`${JSON.stringify(request.resolution)}`
+    }
     });
 //
-function message_to_service_worker(){
-  backgroundPageConnection.postMessage({
-    //  name: 'init',
-      cmd:"log",
-      tabId: chrome.devtools.inspectedWindow.tabId
-  });
-};
+ 
+ //step_one_post();
+ // content tab listenter
+ 
+// settings tab listeners
 
-function makePost(){
-  let data ={
-    "step": "step_one",
-    "cmd": "start",
-    "tab_id":`${chrome.devtools.inspectedWindow.tabId}`
-    
-  }
-  fetch("http://localhost:3000/posts", {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'}, 
-    body: JSON.stringify(data)
+$("#desktop").click(function(){
+  $(".resolution.active").removeClass("active");
+  $(this).addClass("active");
+  backgroundPageConnection.postMessage({
+    cmd:"resize_desktop",
   })
-  .then(response=>response.json())
-  .then(res => {
-    json_file_obj["id"]=res.id;
-    backgroundPageConnection.postMessage({
-      //  name: 'init',
-        cmd:"log",
-        tabId: `${json_file_obj.id}`
-      // tabId:"this is tab id"
-    });  
-  });
- }
- function step_one_post(){
-  let data ={
-    "step": "step_one",
-    "cmd": "start",
-    "tab_id":`${chrome.devtools.inspectedWindow.tabId}`
-    
-  }
-  fetch("http://localhost:3000/posts", {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'}, 
-    body: JSON.stringify(data)
+});
+$("#mobile").click(function(){
+  $(".resolution.active").removeClass("active");
+  $(this).addClass("active");
+  backgroundPageConnection.postMessage({
+    cmd:"resize_mobile",
   })
-  .then(response=>response.json())
-  .then(res => {
-    json_file_obj["id"]=res.id;
-    backgroundPageConnection.postMessage({
-      //  name: 'init',
-        cmd:"log",
-        content: `${JSON.stringify(json_file_obj)}`
-      
-    });  
-  });
- }
- step_one_post();
-// choose type of scrape listeners
+});
+$("#country").change(function(){
+  json_file_obj.partner_country=$(this).val();
+}
+);
+$("#retailer").change(function(){
+  json_file_obj.Partner_name=$(this).val();
+}
+);
+
+// Type tab listeners
 $("#brand_prominence").click(function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="brand_prominence";
   backgroundPageConnection.postMessage({
-    //  name: 'init',
-      cmd:"log",
-      content: `${JSON.stringify(json_file_obj)}`
-    
-  }); 
+    cmd:"log",
+    content: `${JSON.stringify(json_file_obj)}`
+});  
 });
 $("#apple_pay").click(function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
-  json_file_obj.scrapeType="apple_pay";
+  json_file_obj.scrapeType="apple_pay";  
   backgroundPageConnection.postMessage({
-    //  name: 'init',
-      cmd:"log",
-      content: `${JSON.stringify(json_file_obj)}`
-    
-  }); 
+    cmd:"log",
+    content: `${JSON.stringify(json_file_obj)}`
+});  
 });
 $("#stock_delivery").click(function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
-  json_file_obj.scrapeType="stock_delivery";
+  json_file_obj.scrapeType="stock_delivery";  
   backgroundPageConnection.postMessage({
-    //  name: 'init',
-      cmd:"log",
-      content: `${JSON.stringify(json_file_obj)}`
-    
-  }); 
+    cmd:"log",
+    content: `${JSON.stringify(json_file_obj)}`
+});  
 });
 // tab change listeners
 $("#type").click(function(){
@@ -167,4 +157,52 @@ $("#panel4_next_step").click(function(){
 // panel 5
 $("#panel5_previous_step").click(function(){
   $("#test_tab").click();
+  })
+  // make posts
+  
+function makePost(){
+  let data ={
+    "step": "step_one",
+    "cmd": "start",
+    "tab_id":`${chrome.devtools.inspectedWindow.tabId}`
+    
+  }
+  fetch("http://localhost:3000/posts", {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify(data)
+  })
+  .then(response=>response.json())
+  .then(res => {
+    json_file_obj["id"]=res.id;
+    backgroundPageConnection.postMessage({
+      //  name: 'init',
+        cmd:"log",
+        tabId: `${json_file_obj.id}`
+      // tabId:"this is tab id"
+    });  
   });
+ }
+ function step_one_post(){
+  let data ={
+    "step": "step_one",
+    "cmd": "start",
+    "tab_id":`${chrome.devtools.inspectedWindow.tabId}`
+    
+  }
+  fetch("http://localhost:3000/posts", {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify(data)
+  })
+  .then(response=>response.json())
+  .then(res => {
+    json_file_obj["id"]=res.id;
+    backgroundPageConnection.postMessage({
+      //  name: 'init',
+        cmd:"first_step",
+        content: `${JSON.stringify(json_file_obj)}`
+      
+    });  
+  });
+ }
