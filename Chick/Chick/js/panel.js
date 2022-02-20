@@ -13,6 +13,24 @@ var json_file_obj={
   slots:[]
 
 };
+var temp_slot_obj={
+  "name": "Advert Banner",
+  "section_type": "Banner",
+  "position": 1,
+  "x_position":272,
+  "y_position":398,
+  "width":976,
+  "height":192,
+  "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
+  "brand":"No Brand",
+  "is_in_carousel": false,
+  "carousel_total_frames":null,
+  "carousel_frame_number":null,
+  "carousel_x_position":null,
+  "carousel_y_position":null,
+  "carousel_width":null,
+  "carousel_height":null
+};
 var start_cmd={cmd:"start",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
 var log_cmd={cmd:"log",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
 
@@ -43,6 +61,26 @@ backgroundPageConnection.postMessage({
  
  //step_one_post();
  // content tab listenter
+ 
+$("#slot_click").click(function(){
+  //
+}
+);
+$("#slot_enter").click(function(){
+  if($("#enter_class_id_div_id").hasClass("active")){
+    $("#enter_class_id_div_id").removeClass("active");
+    }
+    else{$("#enter_class_id_div_id").addClass("active")}
+}
+);
+$("#slot_group_type").change(function(){
+  temp_slot_obj.section_type=$(this).val();
+}
+);
+$("#slot_group_name").change(function(){
+  temp_slot_obj.name=$(this).val();
+}
+);
  
 // settings tab listeners
 

@@ -62,4 +62,17 @@ chrome.action.onClicked.addListener(async tab => {
     console.warn(e);
   }
 });
-// long term connection ...not goog to manage and it closeses automatically
+// context menu ["page", "selection", "image", "link"]
+chrome.runtime.onInstalled.addListener(function() {
+  chrome.contextMenus.create({
+      "title": "Magpie Hatchery",
+      "contexts": ["all"],
+      "id": "myContextMenuId"
+  });
+});
+  
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+  chrome.tabs.create({  
+      url: "http://www.google.com/search?q=" + encodeURIComponent(info.selectionText)
+  });
+})

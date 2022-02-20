@@ -11,7 +11,8 @@
       "notifications",
       "downloads",
       "unlimitedStorage",
-      "declarativeNetRequest"
+      "declarativeNetRequest",
+      "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"

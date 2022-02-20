@@ -5,6 +5,27 @@ function make_settings(){
   Partner_homepage_url:`${window.location.origin}`,
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
+function make_content(){
+  return {
+    "name": "Advert Banner",
+    "section_type": "Banner",
+    "position": 1,
+    "x_position":272,
+    "y_position":398,
+    "width":976,
+    "height":192,
+    "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
+    "brand":"No Brand",
+    "is_in_carousel": false,
+    "carousel_total_frames":null,
+    "carousel_frame_number":null,
+    "carousel_x_position":null,
+    "carousel_y_position":null,
+    "carousel_width":null,
+    "carousel_height":null
+
+  }
+}
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
   console.log("inside content script runtime");
       if(request.cmd=="onConnect"){          
@@ -36,9 +57,13 @@ $(window).resize(function(){
   resolution:`${$(window).width()}x${$(window).height()}`})
 })
 $(window).on('load', function() {
-      
+  document.body.addEventListener("contextmenu",function(e){
+    console.log(`context :${e.target}`);
+  //  make_content();
+  })
 
 });
+
 ///////////////////////////////////////////////////////////
 function makePost(){
 let data ={

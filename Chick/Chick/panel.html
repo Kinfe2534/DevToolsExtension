@@ -162,15 +162,15 @@
 						Slot group name
 					</label>
 					<select type="text" id="slot_group_name">
-						<option>Hero Banner</option>
-						<option>Featured Products</option>
+						<option value="Hero Banner" selected>Hero Banner</option>
+						<option value="Featured Products">Featured Products</option>
 					</select>
 					<label>
 						Slot group type
 					</label>
 					<select type="text" id="slot_group_type">
-						<option>Banner</option>
-						<option>Product</option>
+						<option value="Banner" selected>Banner</option>
+						<option value="Product">Product</option>
 					</select>
 					<div class="slot">
 						<div>
@@ -199,18 +199,21 @@
 						<span>Is a carousel</span>
 					</div>
 					<div class="find_slots">
-						<a class="button">
+						<button class="button" id="slot_click">
 							<img src="icons/pointer-svgrepo-com-white.svg" />
 							<span>
 								Click
 							</span>
-						</a>
-						<a class="button">
+						</button>
+						<button class="button" id="slot_enter">
 							<img src="icons/code-svgrepo-com-white.svg" />
 							<span>
 								Enter
 							</span>
-						</a>
+						</button>
+					</div>
+					<div class="enter_class_id_div_class active" id="enter_class_id_div_id">
+						<input id="enter_class_id_input_id"  placeholder="i.e class or id">
 					</div>
 				</div>
 			</div>

@@ -377,6 +377,7 @@ span.slot_info {
   align-items: center;
   color:rgba(24,132,122, 1)
 }
+ /* added css a changed to button */
 .panel.active {
   display: block;
 }
@@ -414,4 +415,23 @@ button.button:hover {
 
 button.button.previous {
   background-color: #6C7981;
+}
+
+.find_slots button.button {
+  margin-right: 10px;
+  margin-left: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.find_slots button.button img {
+  width: 20px;
+  height: auto;
+  margin-right: 10px;
+}
+.enter_class_id_div_class.active {
+  display: block;
+}
+.enter_class_id_div_class {
+  display: none;
 }
