@@ -72,7 +72,21 @@ chrome.runtime.onInstalled.addListener(function() {
 });
   
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
-  chrome.tabs.create({  
-      url: "http://www.google.com/search?q=" + encodeURIComponent(info.selectionText)
-  });
+  try {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs[0].id) {
+    var tabId = tabs[0].id;
+    if (tabId in connections) {
+      connections[tabId].postMessage({cmd:"make_with_click"});
+    } else {
+      console.log("Tab not found in connection list.");
+    }
+  } else {
+    console.log("tab not defined.");
+  }
+  return true;
+    })
+  }
+  catch (e) {
+    console.warn(e);}
 })

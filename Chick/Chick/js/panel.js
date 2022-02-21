@@ -13,102 +13,101 @@ var json_file_obj={
   slots:[]
 
 };
-var temp_slot_obj={
-  "name": "Advert Banner",
-  "section_type": "Banner",
-  "position": 1,
-  "x_position":272,
-  "y_position":398,
-  "width":976,
-  "height":192,
-  "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
-  "brand":"No Brand",
-  "is_in_carousel": false,
-  "carousel_total_frames":null,
-  "carousel_frame_number":null,
-  "carousel_x_position":null,
-  "carousel_y_position":null,
-  "carousel_width":null,
-  "carousel_height":null
-};
-var start_cmd={cmd:"start",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
-var log_cmd={cmd:"log",source:"dev",content:`${JSON.stringify(json_file_obj)}`};
+function slot_settings_obj(){
+  return{
+  "name": `${$("#slot_group_name").val()}`,
+  "section_type": `${$("#slot_group_type").val()}`,
+  "is_in_carousel": `${$("#is_carousel_checkbox").val()}`,
+  }
 
+}
 var backgroundPageConnection = chrome.runtime.connect({
    name: "init"
   });
   // initially send the tab id
 backgroundPageConnection.postMessage({
     cmd:"onConnect",
+    content: `${JSON.stringify(json_file_obj)}`,    
     tabId:chrome.devtools.inspectedWindow.tabId,
-    content: `${JSON.stringify(json_file_obj)}`
 });  
   // Listen to messages from the background page
   backgroundPageConnection.onMessage.addListener(function (request) {
     if(request.cmd=="settings"){
-      json_file_obj["url"]=`${JSON.stringify(request.url)}`;
-      json_file_obj.Url_name=`${JSON.stringify(request.Url_name)}`;
-      json_file_obj.Partner_homepage_url=`${JSON.stringify(request.Partner_homepage_url)}`;
-      json_file_obj.resolution=`${JSON.stringify(request.resolution)}`
+      json_file_obj["url"]=`${request.content.url}`;
+      json_file_obj.Url_name=`${request.content.Url_name}`;
+      json_file_obj.Partner_homepage_url=`${request.content.Partner_homepage_url}`;
+      json_file_obj.resolution=`${request.content.resolution}`
 
     }
     else if(request.cmd=="window_size_changed"){
       
-      json_file_obj.resolution=`${JSON.stringify(request.resolution)}`
+      json_file_obj.resolution=`${request.resolution}`
+    }else if(request.cmd=="make_with_click"){
+      backgroundPageConnection.postMessage({cmd:"make_with_click",content:`${slot_settings_obj()}`})
+    }
+    else if(request.cmd=="sending_with_click"){
+      json_file_obj.slots=request.content;
+      $("#slots_identified").text(`${json_file_obj.slots.length}`);
+    }else if(request.cmd=="sending_with_class_or_id"){
+      json_file_obj.slots=request.content;
+      $("#slots_identified").text(`${json_file_obj.slots.length}`);
     }
     });
 //
  
  //step_one_post();
  // content tab listenter
- 
-$("#slot_click").click(function(){
+
+ $("#add_another_slot_group_div").on('click',function(){
   //
 }
 );
-$("#slot_enter").click(function(){
+$("#enter_class_id_button").on('click',function(){
+  var val=$("#enter_class_id_input_id").val();
+  backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${slot_settings_obj()}`,class_or_id:`${val}`})
+}
+);
+  
+$("#slot_click").on('click',function(){
+  //
+}
+);
+$("#slot_enter").on('click',function(){
   if($("#enter_class_id_div_id").hasClass("active")){
     $("#enter_class_id_div_id").removeClass("active");
     }
     else{$("#enter_class_id_div_id").addClass("active")}
 }
 );
-$("#slot_group_type").change(function(){
-  temp_slot_obj.section_type=$(this).val();
-}
-);
-$("#slot_group_name").change(function(){
-  temp_slot_obj.name=$(this).val();
-}
-);
+
  
 // settings tab listeners
 
-$("#desktop").click(function(){
+$("#desktop").on('click',function(){
   $(".resolution.active").removeClass("active");
   $(this).addClass("active");
   backgroundPageConnection.postMessage({
     cmd:"resize_desktop",
   })
 });
-$("#mobile").click(function(){
+$("#mobile").on('click',function(){
   $(".resolution.active").removeClass("active");
   $(this).addClass("active");
   backgroundPageConnection.postMessage({
     cmd:"resize_mobile",
   })
 });
-$("#country").change(function(){
+$("#country").on('change',function(){
   json_file_obj.partner_country=$(this).val();
 }
 );
-$("#retailer").change(function(){
+$("#retailer").on('change',function(){
   json_file_obj.Partner_name=$(this).val();
 }
 );
 
 // Type tab listeners
-$("#brand_prominence").click(function(){
+$("#brand_prominence").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="brand_prominence";
@@ -117,7 +116,7 @@ $("#brand_prominence").click(function(){
     content: `${JSON.stringify(json_file_obj)}`
 });  
 });
-$("#apple_pay").click(function(){
+$("#apple_pay").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="apple_pay";  
@@ -126,7 +125,7 @@ $("#apple_pay").click(function(){
     content: `${JSON.stringify(json_file_obj)}`
 });  
 });
-$("#stock_delivery").click(function(){
+$("#stock_delivery").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="stock_delivery";  
@@ -136,31 +135,31 @@ $("#stock_delivery").click(function(){
 });  
 });
 // tab change listeners
-$("#type").click(function(){
+$("#type").on( "click",function(){
   $(".tab.active").removeClass("active");
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
   $("#panel1").addClass("active");
 });
-$("#settings_tab").click(function(){
+$("#settings_tab").on( "click",function(){
   $(".tab.active").removeClass("active");
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
   $("#panel2").addClass("active");    
 });
-$("#content_tab").click(function(){
+$("#content_tab").on( "click",function(){
   $(".tab.active").removeClass("active");
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
   $("#panel3").addClass("active");
 });
-$("#test_tab").click(function(){
+$("#test_tab").on( "click",function(){
   $(".tab.active").removeClass("active");
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
   $("#panel4").addClass("active");
 });
-$("#publish_tab").click(function(){
+$("#publish_tab").on( "click",function(){
   $(".tab.active").removeClass("active");
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
@@ -168,33 +167,33 @@ $("#publish_tab").click(function(){
 });
 // previous and next steps listeners
 // panel 1
-$("#panel1_next_step").click(function(){
-  $("#settings_tab").click();
+$("#panel1_next_step").on( "click",function(){
+  $("#settings_tab").trigger("click");
   });
 // panel 2
-$("#panel2_previous_step").click(function(){
-  $("#type").click();
+$("#panel2_previous_step").on( "click",function(){
+  $("#type").trigger("click");
   });
-$("#panel2_next_step").click(function(){
-  $("#content_tab").click();
+$("#panel2_next_step").on( "click",function(){
+  $("#content_tab").trigger("click");
 });
 // panel 3
-$("#panel3_previous_step").click(function(){
-  $("#settings_tab").click();
+$("#panel3_previous_step").on( "click",function(){
+  $("#settings_tab").trigger("click");
   });
-$("#panel3_next_step").click(function(){
-  $("#test_tab").click();
+$("#panel3_next_step").on( "click",function(){
+  $("#test_tab").trigger("click");
 });
 // panel 4
-$("#panel4_previous_step").click(function(){
-  $("#content_tab").click();
+$("#panel4_previous_step").on( "click",function(){
+  $("#content_tab").trigger("click");
   });
-$("#panel4_next_step").click(function(){
-  $("#publish_tab").click();
+$("#panel4_next_step").on( "click",function(){
+  $("#publish_tab").trigger("click");
 });
 // panel 5
-$("#panel5_previous_step").click(function(){
-  $("#test_tab").click();
+$("#panel5_previous_step").on( "click",function(){
+  $("#test_tab").trigger("click");
   })
   // make posts
   

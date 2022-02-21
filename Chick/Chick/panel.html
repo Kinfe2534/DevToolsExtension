@@ -180,7 +180,7 @@
 							<p class="slot_count">Slots identified</p>
 						</div>
 						<div>
-							<span class="slot_number">
+							<span class="slot_number" id="slots_identified">
 								12
 							</span>
 						</div>
@@ -194,8 +194,8 @@
 							<img src="icons/x-svgrepo-com.svg" />
 						</div>
 					</div>
-					<div class="is_carousel">
-						<input type="checkbox">
+					<div class="is_carousel" >
+						<input type="checkbox" id="is_carousel_checkbox">
 						<span>Is a carousel</span>
 					</div>
 					<div class="find_slots">
@@ -214,12 +214,13 @@
 					</div>
 					<div class="enter_class_id_div_class active" id="enter_class_id_div_id">
 						<input id="enter_class_id_input_id"  placeholder="i.e class or id">
+						<button class="button" id="enter_class_id_button">Find</button>
 					</div>
 				</div>
 			</div>
 			<div class="column">
 				<div class="column_inner">
-					<div class="add_group">
+					<div class="add_group" id="add_another_slot_group_div">
 						<img src="icons/plus-svgrepo-com.svg">
 						<span style="padding-left: 10px;">
 							Add another slot group
