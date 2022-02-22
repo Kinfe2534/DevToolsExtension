@@ -435,3 +435,15 @@ button.button.previous {
 .enter_class_or_id_div_class {
   display: none;
 }
+
+.slot_click_class.active, .slot_click_class:hover {
+  background-color: #f00202;
+  color: rgb(29, 26, 26);
+  border-color:#0b45d6;
+}
+
+.slot_enter_class.active, .slot_enter_class:hover {
+  background-color: #f00202;
+  color: rgb(29, 26, 26);
+  border-color:#0b45d6;
+}

@@ -156,19 +156,22 @@
 			</button>
 		</div>
 		<div id="content" class="columns">
-			<div class="column">
+			<div class="column" id="slot_group_0">
 				<div class="column_inner">
-					<label>
-						Slot group name
-					</label>
-					<select type="text" id="slot_group_name">
+					<div class="add_group" >
+						<img src="icons/minus-svgrepo-com.svg" id="minus_slot_group_0">
+						<span style="padding-left: 10px;" id="slot_group_name_span_0">
+							Slot group name 0
+						</span>
+					</div>
+					<select type="text" id="slot_group_name_0">
 						<option value="Hero Banner" selected>Hero Banner</option>
 						<option value="Featured Products">Featured Products</option>
 					</select>
 					<label>
 						Slot group type
 					</label>
-					<select type="text" id="slot_group_type">
+					<select type="text" id="slot_group_type_0">
 						<option value="Banner" selected>Banner</option>
 						<option value="Product">Product</option>
 					</select>
@@ -180,7 +183,7 @@
 							<p class="slot_count">Slots identified</p>
 						</div>
 						<div>
-							<span class="slot_number" id="slots_identified">
+							<span class="slot_number" id="slots_identified_0">
 								12
 							</span>
 						</div>
@@ -195,32 +198,104 @@
 						</div>
 					</div>
 					<div class="is_carousel" >
-						<input type="checkbox" id="is_carousel_checkbox">
+						<input type="checkbox" id="is_carousel_checkbox_0">
 						<span>Is a carousel</span>
 					</div>
 					<div class="find_slots">
-						<button class="button" id="slot_click">
+						<button class="button slot_click_class active" id="slot_click_0">
 							<img src="icons/pointer-svgrepo-com-white.svg" />
 							<span>
 								Click
 							</span>
 						</button>
-						<button class="button" id="slot_enter">
+						<button class="button slot_enter_class" id="slot_enter_0">
 							<img src="icons/code-svgrepo-com-white.svg" />
 							<span>
 								Enter
 							</span>
 						</button>
 					</div>
-					<div class="enter_class_or_id_div_class" id="enter_class_or_id_div_id">
-						<input id="enter_class_or_id_input_id"  placeholder="i.e class or id">
-						<button class="button" id="enter_class_or_id_button">Find</button>
+					<div class="enter_class_or_id_div_class" id="enter_class_or_id_div_id_0">
+						<input id="enter_class_or_id_input_id_0"  placeholder="i.e class or id">
+						<button class="button" id="enter_class_or_id_button_0">Find</button>
 					</div>
 				</div>
+				
 			</div>
-			<div class="column">
+			<template id="another_slot_template">
+			<div>
+			<div class="column" id="slot_group_template">
 				<div class="column_inner">
-					<div class="add_group" id="add_another_slot_group_div">
+					<div class="add_group">
+						<img src="icons/minus-svgrepo-com.svg"  id="minus_slot_group_template">
+						<span style="padding-left: 10px;" id="slot_group_name_span_template" >
+							Slot group name
+						</span>
+					</div>
+					</div>
+					<select type="text" id="slot_group_name_template">
+						<option value="Hero Banner" selected>Hero Banner</option>
+						<option value="Featured Products">Featured Products</option>
+					</select>
+					<label>
+						Slot group type
+					</label>
+					<select type="text" id="slot_group_type_template">
+						<option value="Banner" selected>Banner</option>
+						<option value="Product">Product</option>
+					</select>
+					<div class="slot">
+						<div>
+							<img src="icons/pointer-svgrepo-com.svg" />
+						</div>
+						<div>
+							<p class="slot_count">Slots identified</p>
+						</div>
+						<div>
+							<span class="slot_number" id="slots_identified_template">
+								12
+							</span>
+						</div>
+						<div>
+							<img src="icons/eye-svgrepo-com.svg" />
+						</div>
+						<div>
+							<img src="icons/cog-svgrepo-com.svg" />
+						</div>
+						<div style="padding-right:10px">
+							<img src="icons/x-svgrepo-com.svg" />
+						</div>
+					</div>
+					<div class="is_carousel" >
+						<input type="checkbox" id="is_carousel_checkbox_template">
+						<span>Is a carousel</span>
+					</div>
+					<div class="find_slots">
+						<button class="button slot_click_class" id="slot_click_template">
+							<img src="icons/pointer-svgrepo-com-white.svg" />
+							<span>
+								Click
+							</span>
+						</button>
+						<button class="button slot_enter_class" id="slot_enter_template">
+							<img src="icons/code-svgrepo-com-white.svg" />
+							<span>
+								Enter
+							</span>
+						</button>
+					</div>
+					<div class="enter_class_or_id_div_class" id="enter_class_or_id_div_id_template">
+						<input id="enter_class_or_id_input_id_template"  placeholder="i.e class or id">
+						<button class="button" id="enter_class_or_id_button_template">Find</button>
+					</div>
+				</div>
+				
+			</div>
+			</div>
+			</template>
+			<div class="column" id="add_another_slot_group_div">
+				<div class="column_inner" >
+					<div class="add_group" id="add_another_slot_group">
 						<img src="icons/plus-svgrepo-com.svg">
 						<span style="padding-left: 10px;">
 							Add another slot group

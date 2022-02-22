@@ -1,5 +1,7 @@
 
 // Create a connection to the background page
+var next_slot_group_number=1;
+var slot_groups=[];
 var json_file_obj={
   id:null,
   scrapeType:null,
@@ -13,6 +15,7 @@ var json_file_obj={
   slots:[]
 
 };
+var active_slot_group=0;
 function slot_settings_obj(){
   return{
   "name": `${$("#slot_group_name").val()}`,
@@ -58,8 +61,72 @@ backgroundPageConnection.postMessage({
  //step_one_post();
  // content tab listenter
 
- $("#add_another_slot_group_div").on('click',function(){
-  //
+ $("#add_another_slot_group").on('click',function(){
+   //https://stackoverflow.com/questions/6636622/create-element-from-template-element
+// make another obj with $()
+  var slot_group_number=`${next_slot_group_number}`;
+  var template = $($('#another_slot_template').html());
+  
+  // change the ids of the template elements 
+        template.find("#slot_group_name_span_template").text(`Slot group name ${slot_group_number}`);
+        template.find("#minus_slot_group_template").attr('id',`minus_slot_group_${slot_group_number}`);
+        
+        template.find("#slot_group_template").attr('id',`slot_group_${slot_group_number}`);
+        template.find("#slot_group_name_template").attr('id',`slot_group_name_${slot_group_number}`);
+        template.find("#slot_group_type_template").attr('id',`slot_group_type_${slot_group_number}`);
+        template.find("#slots_identified_template").attr('id',`slots_identified_${slot_group_number}`);
+        template.find("#is_carousel_checkbox_template").attr('id',`is_carousel_checkbox_${slot_group_number}`);
+        template.find("#slot_click_template").attr('id',`slot_click_${slot_group_number}`);      
+        template.find("#slot_enter_template").attr('id',`slot_enter_${slot_group_number}`); 
+
+        template.find("#enter_class_or_id_div_id_template").attr('id',`enter_class_or_id_div_id_${slot_group_number}`);
+        template.find("#enter_class_or_id_input_id_template").attr('id',`enter_class_or_id_input_id_${slot_group_number}`);
+        template.find("#enter_class_or_id_button_template").attr('id',`enter_class_or_id_button_${slot_group_number}`);
+       //append
+       var clone = template.html();
+       $("#add_another_slot_group_div").before(clone);
+   
+      // attach event listenres
+      $(`#slot_enter_${slot_group_number}`).on('click',function(){
+          $(".enter_class_or_id_div_class.active").removeClass("active");
+          $(".slot_enter_class.active").removeClass("active");
+          $(".slot_click_class.active").removeClass("active");
+          $(this).addClass("active");
+          $(`#enter_class_or_id_div_id_${slot_group_number}`).addClass("active");
+          active_slot_group=slot_group_number;
+
+      }
+      );
+      $(`#slot_click_${slot_group_number}`).on('click',function(){        
+        $(".enter_class_or_id_div_class.active").removeClass("active");
+        $(".slot_click_class.active").removeClass("active");
+        $(".slot_enter_class.active").removeClass("active");
+        $(this).addClass("active");
+        active_slot_group=slot_group_number;
+      }
+      );
+      $(`#minus_slot_group_${slot_group_number}`).on("click",function(){
+        $(`#slot_group_${slot_group_number}`).remove();
+
+      });
+      var name= $(`#slot_group_name_${slot_group_number}`).val();
+      var section_type= $(`#slot_type_name_${slot_group_number}`).val();
+      var is_in_carousel= $(`#is_carousel_checkbox_${slot_group_number}`).val();
+      
+      slot_groups.push({"slot_group_number":`${slot_group_number}`, 
+                        "slot_group_setting":{
+                          "name": `${name}`,
+                          "section_type": `${section_type}`,
+                          "is_in_carousel": `${is_in_carousel}`                                                                                                    
+                                }                                
+                                });
+     
+
+    // Clone the new row and insert it into the table
+    next_slot_group_number+=1;
+    
+
+  
 }
 );
 $("#enter_class_or_id_button").on('click',function(){
@@ -67,16 +134,26 @@ $("#enter_class_or_id_button").on('click',function(){
   backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${slot_settings_obj()}`,class_or_id:`${val}`})
 }
 );
-  
-$("#slot_click").on('click',function(){
-  //
+$('#minus_slot_group_0').on("click",function(){
+  $("#slot_group_0").remove();
+
+});
+
+$("#slot_click_0").on('click',function(){
+  $(".enter_class_or_id_div_class.active").removeClass("active");
+  $(".slot_click_class.active").removeClass("active");
+  $(".slot_enter_class.active").removeClass("active");
+  $(this).addClass("active");
+  active_slot_group=0;
 }
 );
-$("#slot_enter").on('click',function(){
-  if($("#enter_class_or_id_div_id").hasClass("active")){
-    $("#enter_class_or_id_div_id").removeClass("active");
-    }
-    else{$("#enter_class_or_id_div_id").addClass("active")}
+$("#slot_enter_0").on('click',function(){
+  $(".enter_class_or_id_div_class.active").removeClass("active");
+  $(".slot_click_class.active").removeClass("active");
+  $(".slot_enter_class.active").removeClass("active");
+  $(this).addClass("active");    
+  $("#enter_class_or_id_div_id_0").addClass("active");
+  active_slot_group=0;
 }
 );
 
