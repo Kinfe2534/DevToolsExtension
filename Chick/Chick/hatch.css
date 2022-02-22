@@ -429,9 +429,9 @@ button.button.previous {
   height: auto;
   margin-right: 10px;
 }
-.enter_class_id_div_class.active {
+.enter_class_or_id_div_class.active {
   display: block;
 }
-.enter_class_id_div_class {
+.enter_class_or_id_div_class {
   display: none;
 }

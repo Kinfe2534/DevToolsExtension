@@ -62,8 +62,8 @@ backgroundPageConnection.postMessage({
   //
 }
 );
-$("#enter_class_id_button").on('click',function(){
-  var val=$("#enter_class_id_input_id").val();
+$("#enter_class_or_id_button").on('click',function(){
+  var val=$("#enter_class_or_id_input_id").val();
   backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${slot_settings_obj()}`,class_or_id:`${val}`})
 }
 );
@@ -73,10 +73,10 @@ $("#slot_click").on('click',function(){
 }
 );
 $("#slot_enter").on('click',function(){
-  if($("#enter_class_id_div_id").hasClass("active")){
-    $("#enter_class_id_div_id").removeClass("active");
+  if($("#enter_class_or_id_div_id").hasClass("active")){
+    $("#enter_class_or_id_div_id").removeClass("active");
     }
-    else{$("#enter_class_id_div_id").addClass("active")}
+    else{$("#enter_class_or_id_div_id").addClass("active")}
 }
 );
 
