@@ -8,14 +8,14 @@ function make_settings(){
   Partner_homepage_url:`${window.location.origin}`,
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
-function update_slots(target,slots_settings){
-  if(slots_settings.is_in_carousel==true){
+function update_slots(target,request){
+  if(request.is_in_carousel==true){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
     {
-      "name": `${slots_settings.name}`,
-      "section_type": `${slots_settings.section_type}`,
+      "name": `${request.name}`,
+      "section_type": `${request.section_type}`,
       "position": `${i}`,
       "x_position":`${target.clientX}`,
       "y_position":`${target.clientY}`,
@@ -34,14 +34,14 @@ function update_slots(target,slots_settings){
     });
   }
   
-  return temp_slots;
-} else {
+  return {slot_group_number:request.content.slot_group_number,content: temp_slots};
+} else if(request.is_in_carousel==false){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
     {
-      "name": `${slots_settings.name}`,
-      "section_type": `${slots_settings.section_type}`,
+      "name": `${request.name}`,
+      "section_type": `${request.section_type}`,
       "position": `${i}`,
       "x_position":`${e.clientX}`,
       "y_position":`${e.clientY}`,
@@ -60,7 +60,7 @@ function update_slots(target,slots_settings){
     });
   }
   
-  return temp_slots;
+  return {slot_group_number:request.content.slot_group_number,content: temp_slots};
 
 }
 }
@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     chrome.runtime.sendMessage({cmd:"sending_with_click",content: `${update_slots(current_target_element, request)}`},function(){});
   }
   else if(request.cmd=="make_with_class_or_id"){
-    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:`${update_slots(request.class_or_id,request)}`},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:`${update_slots(request.content.val,request)}`},function(){});
   }
 });
 ///////////////////////////////////////////////////////////////////////

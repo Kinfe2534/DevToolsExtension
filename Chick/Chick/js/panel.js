@@ -16,14 +16,17 @@ var json_file_obj={
 
 };
 var active_slot_group=0;
-function slot_settings_obj(){
-  return{
-  "name": `${$("#slot_group_name").val()}`,
-  "section_type": `${$("#slot_group_type").val()}`,
-  "is_in_carousel": `${$("#is_carousel_checkbox").val()}`,
-  }
-
-}
+function make_slot_settings_0() {
+  var name= $("#slot_group_name_0").val();
+  var section_type= $("#slot_group_name_0").val();
+  var is_in_carousel= $("#slot_group_name_0").val();
+  var val=$("enter_class_or_id_input_id_0").val();
+      return      {"slot_group_number":0,
+                  "name": `${name}`,
+                  "section_type": `${section_type}`,
+                  "is_in_carousel": `${is_in_carousel}`,                
+                  "val":`${val}` 
+                  } };
 var backgroundPageConnection = chrome.runtime.connect({
    name: "init"
   });
@@ -46,15 +49,24 @@ backgroundPageConnection.postMessage({
       
       json_file_obj.resolution=`${request.resolution}`
     }else if(request.cmd=="make_with_click"){
-      backgroundPageConnection.postMessage({cmd:"make_with_click",content:`${slot_settings_obj()}`})
+      //backgroundPageConnection.postMessage({cmd:"make_with_click",content:`${slot_settings_obj()}`})
     }
     else if(request.cmd=="sending_with_click"){
-      json_file_obj.slots=request.content;
+      for(i=0;i<slot_groups.length;i++){
+       // if()
+      }
       $("#slots_identified").text(`${json_file_obj.slots.length}`);
     }else if(request.cmd=="sending_with_class_or_id"){
-      json_file_obj.slots=request.content;
+      for(i=0;i<slot_groups.length;i++){
+        if(request.content.slot_group_number==slot_groups[i].slot_group_number){
+          
+          break;
+        }else{
+          slot_groups.push(request.content);
+        }
       $("#slots_identified").text(`${json_file_obj.slots.length}`);
     }
+  }
     });
 //
  
@@ -81,7 +93,7 @@ backgroundPageConnection.postMessage({
 
         template.find("#enter_class_or_id_div_id_template").attr('id',`enter_class_or_id_div_id_${slot_group_number}`);
         template.find("#enter_class_or_id_input_id_template").attr('id',`enter_class_or_id_input_id_${slot_group_number}`);
-        template.find("#enter_class_or_id_button_template").attr('id',`enter_class_or_id_button_${slot_group_number}`);
+        template.find("#enter_class_or_id_find_template").attr('id',`enter_class_or_id_find_${slot_group_number}`);
        //append
        var clone = template.html();
        $("#add_another_slot_group_div").before(clone);
@@ -109,17 +121,25 @@ backgroundPageConnection.postMessage({
         $(`#slot_group_${slot_group_number}`).remove();
 
       });
-      var name= $(`#slot_group_name_${slot_group_number}`).val();
-      var section_type= $(`#slot_type_name_${slot_group_number}`).val();
-      var is_in_carousel= $(`#is_carousel_checkbox_${slot_group_number}`).val();
       
-      slot_groups.push({"slot_group_number":`${slot_group_number}`, 
-                        "slot_group_setting":{
+      
+      function make_slot_settings() {
+        var name= $(`#slot_group_name_${slot_group_number}`).val();
+        var section_type= $(`#slot_type_name_${slot_group_number}`).val();
+        var is_in_carousel= $(`#is_carousel_checkbox_${slot_group_number}`).val();
+        var val=$(`enter_class_or_id_input_id_${slot_group_number}`).val();
+            return      { "slot_group_number":`${slot_group_number}`, 
                           "name": `${name}`,
                           "section_type": `${section_type}`,
-                          "is_in_carousel": `${is_in_carousel}`                                                                                                    
-                                }                                
-                                });
+                          "is_in_carousel": `${is_in_carousel}`,                        
+                          "val": `${val}`
+                        }   };     
+
+      $(`enter_class_or_id_find_${slot_group_number}`).on("click",function(){
+        
+        backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${make_slot_settings()}`});
+
+      });
      
 
     // Clone the new row and insert it into the table
@@ -129,10 +149,9 @@ backgroundPageConnection.postMessage({
   
 }
 );
-$("#enter_class_or_id_button").on('click',function(){
-  var val=$("#enter_class_or_id_input_id").val();
-  backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${slot_settings_obj()}`,class_or_id:`${val}`})
-}
+$("#enter_class_or_id_find_0").on('click',function(){ 
+  backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:`${make_slot_settings_0()}`})
+ }
 );
 $('#minus_slot_group_0').on("click",function(){
   $("#slot_group_0").remove();
