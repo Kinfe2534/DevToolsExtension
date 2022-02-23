@@ -9,7 +9,7 @@ function make_settings(){
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
 function update_slots(target,request){
-  if(request.is_in_carousel==true){
+  if(request.content.is_in_carousel==true){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
@@ -34,8 +34,8 @@ function update_slots(target,request){
     });
   }
   
-  return {slot_group_number:request.content.slot_group_number,content: temp_slots};
-} else if(request.is_in_carousel==false){
+  return JSON.stringify( {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots });
+} else if(request.content.is_in_carousel==false){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
@@ -59,8 +59,7 @@ function update_slots(target,request){
   
     });
   }
-  
-  return {slot_group_number:request.content.slot_group_number,content: temp_slots};
+  return JSON.stringify({"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots });
 
 }
 }
@@ -89,10 +88,10 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     window.resizeTo(1280,1024);
   }
   else if(request.cmd=="make_with_click"){
-    chrome.runtime.sendMessage({cmd:"sending_with_click",content: `${update_slots(current_target_element, request)}`},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(current_target_element, request)},function(){});
   }
   else if(request.cmd=="make_with_class_or_id"){
-    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:`${update_slots(request.content.val,request)}`},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request.content.val,request)},function(){});
   }
 });
 ///////////////////////////////////////////////////////////////////////
