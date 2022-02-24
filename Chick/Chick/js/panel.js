@@ -1,6 +1,9 @@
 
 // Create a connection to the background page
+
+var active_slot_group=0;
 var next_slot_group_number=1;
+var slot_click_settings=null;
 var slot_groups=[];
 var json_file_obj={
   id:null,
@@ -15,7 +18,6 @@ var json_file_obj={
   slots:[]
 
 };
-var active_slot_group=0;
 
 var backgroundPageConnection = chrome.runtime.connect({
    name: "init"
@@ -39,12 +41,11 @@ backgroundPageConnection.postMessage({
       
       json_file_obj.resolution=`${request.resolution}`
     }else if(request.cmd=="make_with_click"){
-      //backgroundPageConnection.postMessage({cmd:"make_with_click",content:`${slot_settings_obj()}`})
+      backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});
     }
     else if(request.cmd=="sending_with_click"){
       
-    }else if(request.cmd=="sending_with_class_or_id"){
-      /*let find_status=true;
+      let find_status=true;
       for(let i=0;i<slot_groups.length;i++){
         if(request.content.slot_group_number==slot_groups[i].slot_group_number){
           slot_groups.splice(i,1,request.content);
@@ -57,11 +58,33 @@ backgroundPageConnection.postMessage({
       slot_groups.push(request.content);
     }
     // $(`#slots_identified_${request.content.slot_group_number}`).text(`${request.content.slots_array.length}`);
-    $(`#slots_identified_${request.content.slot_group_number}`).text("7");
-  */
- slot_groups.push(request);
- backgroundPageConnection.postMessage({cmd:"log",content:request})
- backgroundPageConnection.postMessage({cmd:"log",content:slot_groups})
+      $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
+  
+// slot_groups.push(request);
+// backgroundPageConnection.postMessage({cmd:"log",content:request})
+  backgroundPageConnection.postMessage({cmd:"log",content:slot_groups})
+ 
+ 
+      
+    }else if(request.cmd=="sending_with_class_or_id"){
+      let find_status=true;
+      for(let i=0;i<slot_groups.length;i++){
+        if(request.content.slot_group_number==slot_groups[i].slot_group_number){
+          slot_groups.splice(i,1,request.content);
+          find_status=false;
+          break;
+        }
+     
+    }
+    if(find_status){
+      slot_groups.push(request.content);
+    }
+    // $(`#slots_identified_${request.content.slot_group_number}`).text(`${request.content.slots_array.length}`);
+      $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
+  
+// slot_groups.push(request);
+// backgroundPageConnection.postMessage({cmd:"log",content:request})
+  backgroundPageConnection.postMessage({cmd:"log",content:slot_groups})
  
   }
     });
@@ -112,6 +135,7 @@ backgroundPageConnection.postMessage({
         $(".slot_enter_class.active").removeClass("active");
         $(this).addClass("active");
         active_slot_group=slot_group_number;
+        slot_click_settings= make_slot_settings();
       }
       );
       $(`#minus_slot_group_${slot_group_number}`).on("click",function(){
@@ -123,21 +147,22 @@ backgroundPageConnection.postMessage({
         function make_slot_settings() {
         var name= $(`#slot_group_name_${slot_group_number}`).val();
         var section_type= $(`#slot_group_type_${slot_group_number}`).val();
-        var is_in_carousel= $(`#is_carousel_checkbox_${slot_group_number}`).is(':checked');
+        var is_in_carousel= `${$(`#is_carousel_checkbox_${slot_group_number}`).is(":checked")}`;
         var val=$(`#enter_class_or_id_input_id_${slot_group_number}`).val();
-            return JSON.stringify(     { slot_group_number:`${slot_group_number}`, 
-                          "name": `${name}`,
-                          "section_type": `${section_type}`,
-                          "is_in_carousel": `${is_in_carousel}`,                        
-                          "val": `${val}`
-                        }  ) };     
+            return { slot_group_number:slot_group_number, 
+                          "name": name,
+                          "section_type": section_type,
+                          "is_in_carousel": is_in_carousel,                        
+                          "val": val
+                        }  
+                      
+                      };     
 
       $(`#enter_class_or_id_find_${slot_group_number}`).on("click",function(){
         
         backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:make_slot_settings()});
-      //  backgroundPageConnection.postMessage({cmd:"log",content:make_slot_settings()});
-
       });
+      
      
 
     // Clone the new row and insert it into the table
@@ -153,28 +178,31 @@ function make_slot_settings_0() {
   var section_type= `${$("#slot_group_type_0").val()}`;
   var is_in_carousel= `${$("#is_carousel_checkbox_0").is(":checked")}`;
   var val=`${$("#enter_class_or_id_input_id_0").val()}`;
-      return  JSON.stringify(    {slot_group_number:"0",
-                  "name": name,
-                  "section_type": section_type,
-                  "is_in_carousel": is_in_carousel,                
-                  "val":val
-                  }) }
+   
+      return  {slot_group_number:"0",
+      "name": name,
+      "section_type": section_type,
+      "is_in_carousel": is_in_carousel,                
+      "val":val
+      }
+                }
 $("#enter_class_or_id_find_0").on('click',function(){ 
   backgroundPageConnection.postMessage({cmd:"make_with_class_or_id",content:make_slot_settings_0()});
- backgroundPageConnection.postMessage({cmd:"log",content:make_slot_settings_0()})
  }
 );
+/*
 $('#minus_slot_group_0').on("click",function(){
   $("#slot_group_0").remove();
 
 });
-
+*/
 $("#slot_click_0").on('click',function(){
   $(".enter_class_or_id_div_class.active").removeClass("active");
   $(".slot_click_class.active").removeClass("active");
   $(".slot_enter_class.active").removeClass("active");
   $(this).addClass("active");
   active_slot_group=0;
+  slot_click_settings=make_slot_settings_0();
 }
 );
 $("#slot_enter_0").on('click',function(){

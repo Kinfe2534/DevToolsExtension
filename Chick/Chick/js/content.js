@@ -8,17 +8,17 @@ function make_settings(){
   Partner_homepage_url:`${window.location.origin}`,
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
-function update_slots(target,request){
-  if(request.content.is_in_carousel==true){
+function update_slots(request,target){
+  if(request.content.is_in_carousel=="true"){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
     {
-      "name": `${request.name}`,
-      "section_type": `${request.section_type}`,
+      "name": `${request.content.name}`,
+      "section_type": `${request.content.section_type}`,
       "position": `${i}`,
-      "x_position":`${target.clientX}`,
-      "y_position":`${target.clientY}`,
+      "x_position":253,
+      "y_position":222,
       "width":976,
       "height":192,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
@@ -31,20 +31,21 @@ function update_slots(target,request){
       "carousel_width":null,
       "carousel_height":null
   
-    });
+    }
+    );
   }
   
-  return JSON.stringify( {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots });
-} else if(request.content.is_in_carousel==false){
+  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
+} else if(request.content.is_in_carousel=="false"){
   let temp_slots=[];
   for(let i=0;i<3;i++){
     temp_slots.push(
     {
-      "name": `${request.name}`,
-      "section_type": `${request.section_type}`,
+      "name": `${request.content.name}`,
+      "section_type": `${request.content.section_type}`,
       "position": `${i}`,
-      "x_position":`${e.clientX}`,
-      "y_position":`${e.clientY}`,
+      "x_position":565,
+      "y_position":258,
       "width":976,
       "height":192,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
@@ -57,9 +58,10 @@ function update_slots(target,request){
       "carousel_width":null,
       "carousel_height":null
   
-    });
+    }
+    );
   }
-  return JSON.stringify({"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots });
+  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 
 }
 }
@@ -88,10 +90,10 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     window.resizeTo(1280,1024);
   }
   else if(request.cmd=="make_with_click"){
-    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(current_target_element, request)},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(request,null)},function(){});
   }
   else if(request.cmd=="make_with_class_or_id"){
-    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request.content.val,request)},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request,null)},function(){});
   }
 });
 ///////////////////////////////////////////////////////////////////////
