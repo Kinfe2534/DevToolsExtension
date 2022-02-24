@@ -2,8 +2,9 @@
 // Create a connection to the background page
 
 var active_slot_group=0;
+var click_or_enter="click";
 var next_slot_group_number=1;
-var slot_click_settings=null;
+var slot_click_settings=make_slot_settings_0();
 var slot_groups=[];
 var json_file_obj={
   id:null,
@@ -41,7 +42,8 @@ backgroundPageConnection.postMessage({
       
       json_file_obj.resolution=`${request.resolution}`
     }else if(request.cmd=="make_with_click"){
-      backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});
+      if(click_or_enter=="click"){
+      backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});}
     }
     else if(request.cmd=="sending_with_click"){
       
@@ -62,7 +64,7 @@ backgroundPageConnection.postMessage({
   
 // slot_groups.push(request);
 // backgroundPageConnection.postMessage({cmd:"log",content:request})
-  backgroundPageConnection.postMessage({cmd:"log",content:slot_groups})
+  backgroundPageConnection.postMessage({cmd:"log",content: slot_groups})
  
  
       
@@ -125,6 +127,7 @@ backgroundPageConnection.postMessage({
           $(".slot_click_class.active").removeClass("active");
           $(this).addClass("active");
           $(`#enter_class_or_id_div_id_${slot_group_number}`).addClass("active");
+          click_or_enter="enter";
           active_slot_group=slot_group_number;
 
       }
@@ -134,11 +137,20 @@ backgroundPageConnection.postMessage({
         $(".slot_click_class.active").removeClass("active");
         $(".slot_enter_class.active").removeClass("active");
         $(this).addClass("active");
+        click_or_enter="click";
         active_slot_group=slot_group_number;
         slot_click_settings= make_slot_settings();
       }
       );
       $(`#minus_slot_group_${slot_group_number}`).on("click",function(){
+             if(active_slot_group==slot_group_number){
+        $(".enter_class_or_id_div_class.active").removeClass("active");
+        $(".slot_click_class.active").removeClass("active");
+        $(".slot_enter_class.active").removeClass("active");
+        $("#slot_click_0").addClass("active");
+        click_or_enter="click";
+        active_slot_group=0;
+        slot_click_settings=make_slot_settings_0();}
         $(`#slot_group_${slot_group_number}`).remove();
 
       });
@@ -173,6 +185,12 @@ backgroundPageConnection.postMessage({
 }
 );
 ////////////////////end of add remove//////////////
+// publish tab listeners
+$("#save").on('click',function(){ 
+  backgroundPageConnection.postMessage({cmd:"save",content:slot_groups});
+ }
+);
+// content tab 0 listeners
 function make_slot_settings_0() {
   var name= `${$("#slot_group_name_0").val()}`;
   var section_type= `${$("#slot_group_type_0").val()}`;
@@ -201,6 +219,7 @@ $("#slot_click_0").on('click',function(){
   $(".slot_click_class.active").removeClass("active");
   $(".slot_enter_class.active").removeClass("active");
   $(this).addClass("active");
+  click_or_enter="click";
   active_slot_group=0;
   slot_click_settings=make_slot_settings_0();
 }
@@ -211,6 +230,7 @@ $("#slot_enter_0").on('click',function(){
   $(".slot_enter_class.active").removeClass("active");
   $(this).addClass("active");    
   $("#enter_class_or_id_div_id_0").addClass("active");
+  click_or_enter="enter";
   active_slot_group=0;
 }
 );
@@ -379,3 +399,4 @@ function makePost(){
     });  
   });
  }
+ 

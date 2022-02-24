@@ -95,6 +95,12 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
   else if(request.cmd=="make_with_class_or_id"){
     chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request,null)},function(){});
   }
+  else if(request.cmd=="save"){
+    console.log(request);
+    var k= JSON.stringify(request);
+    console.log(k);
+    exportArray(request);
+  }
 });
 ///////////////////////////////////////////////////////////////////////
 $(window).on('resize',function(){
@@ -109,3 +115,14 @@ $(window).on('load', function() {
   })
 
 });
+
+/////// exports a text content within an array/////////
+//https://www.npmjs.com/package/file-saver
+// first convert the obj to text or provide an array with a text content
+function exportArray(input){
+  var k= JSON.stringify(input);
+    var blob= new Blob([k],  {type: "text/plain;charset=utf-8"});
+    saveAs(blob,"DevToolsOutput.txt");
+    ////export array to file logic
+}
+
