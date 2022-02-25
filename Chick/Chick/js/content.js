@@ -23,13 +23,13 @@ function update_slots(request,target){
       "height":192,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
       "brand":"No Brand",
-      "is_in_carousel": true,
-      "carousel_total_frames":null,
-      "carousel_frame_number":null,
-      "carousel_x_position":null,
-      "carousel_y_position":null,
-      "carousel_width":null,
-      "carousel_height":null
+      "is_in_carousel": "true",
+      "carousel_total_frames":"",
+      "carousel_frame_number":"",
+      "carousel_x_position":"",
+      "carousel_y_position":"",
+      "carousel_width":"",
+      "carousel_height":""
   
     }
     );
@@ -49,14 +49,7 @@ function update_slots(request,target){
       "width":976,
       "height":192,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
-      "brand":"No Brand",
-      "is_in_carousel": false,
-      "carousel_total_frames":null,
-      "carousel_frame_number":null,
-      "carousel_x_position":null,
-      "carousel_y_position":null,
-      "carousel_width":null,
-      "carousel_height":null
+      "brand":"No Brand"
   
     }
     );
@@ -67,16 +60,12 @@ function update_slots(request,target){
 }
 
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
-  console.log("inside content script runtime");
-      if(request.cmd=="onConnect"){          
-    console.log("cmd = onConnect..............");
-    console.log(`log : ${request.content}`); 
-   
-      chrome.runtime.sendMessage({cmd:"settings",content:`${make_settings()}`},function(){});
+  console.log("Magpie Hatchery Dev Tools Extension Running............");
+      if(request.cmd=="onConnect"){     
+      chrome.runtime.sendMessage({cmd:"settings",content:make_settings()},function(){});
       
       }
   else if(request.cmd=="log"){
-    console.log("cmd = log..............");
     console.log(request);
   }  
   else if(request.cmd=="resize_mobile"){
@@ -120,9 +109,10 @@ $(window).on('load', function() {
 //https://www.npmjs.com/package/file-saver
 // first convert the obj to text or provide an array with a text content
 function exportArray(input){
-  var k= JSON.stringify(input);
+  //https://stackoverflow.com/questions/16591742/is-there-a-function-to-stringify-json-with-whitespace
+  var k= JSON.stringify(input,null,'\t');
     var blob= new Blob([k],  {type: "text/plain;charset=utf-8"});
-    saveAs(blob,"DevToolsOutput.txt");
+    saveAs(blob,"DevToolsOutput.json");
     ////export array to file logic
 }
 

@@ -5,28 +5,36 @@ var active_slot_group=0;
 var click_or_enter="click";
 var next_slot_group_number=1;
 var slot_click_settings=make_slot_settings_0();
+var slot_gorups_for_save=[];
 var slot_groups=[];
 var json_file_obj={
-  id:null,
-  scrapeType:null,
-  url:null,
-  Url_name:null,
-  Partner_homepage_url:null,
+  id:"",
+  scrapeType:"Brand Prominence",
+  url:"",
+  Url_name:"",
+  Partner_homepage_url:"",
   Partner_name:"Walmart",
   partner_country:"United Kingdom",
   partner_country_id:"UK",
-  resolution:null,
+  resolution:"",
   slots:[]
 
 };
-
+function make_slot_groups_for_save(){
+  var slots_for_save=[];
+  for(let i=0;i<slot_groups.length;i++){
+    for(let j=0;j<slot_groups[i].slots_array.length;j++){
+      slots_for_save.push(slot_groups[i].slots_array[j]);
+    }
+  }
+  json_file_obj.slots=slots_for_save;
+}
 var backgroundPageConnection = chrome.runtime.connect({
    name: "init"
   });
   // initially send the tab id
 backgroundPageConnection.postMessage({
-    cmd:"onConnect",
-    content: `${JSON.stringify(json_file_obj)}`,    
+    cmd:"onConnect",   
     tabId:chrome.devtools.inspectedWindow.tabId,
 });  
   // Listen to messages from the background page
@@ -35,7 +43,8 @@ backgroundPageConnection.postMessage({
       json_file_obj["url"]=`${request.content.url}`;
       json_file_obj.Url_name=`${request.content.Url_name}`;
       json_file_obj.Partner_homepage_url=`${request.content.Partner_homepage_url}`;
-      json_file_obj.resolution=`${request.content.resolution}`
+      json_file_obj.resolution=`${request.content.resolution}`;
+      $("#url").val(request.content.url);
 
     }
     else if(request.cmd=="window_size_changed"){
@@ -187,7 +196,8 @@ backgroundPageConnection.postMessage({
 ////////////////////end of add remove//////////////
 // publish tab listeners
 $("#save").on('click',function(){ 
-  backgroundPageConnection.postMessage({cmd:"save",content:slot_groups});
+  make_slot_groups_for_save();
+  backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
  }
 );
 // content tab 0 listeners
