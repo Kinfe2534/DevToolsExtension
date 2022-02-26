@@ -9,42 +9,29 @@ function make_settings(){
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
 function update_slots(request){
+  // google suggested search items selector div.AJLUJb
+  // https://www.javatpoint.com/jquery-offset-vs-jquery-position
+  //https://ourcodeworld.com/articles/read/38/how-to-capture-an-image-from-a-dom-element-with-javascript
   var target=null;
   if(request.cmd=="make_with_click"){
   target=current_context_element;    
-  console.log("target with click");
-  console.log(target);
-  console.log("target with click length");
-  console.log(target.length);
-  console.log("target with click children");
-  console.log(target.children());
-  console.log("target with click children length");
-  console.log(target.children().length);
   }
   else if(request.cmd=="make_with_class_or_id"){
-   target=$(`${request.content.val}`);
-   console.log("target with class_or_id");
-   console.log(target);   
-  console.log("target with class_or_id length");
-  console.log(target.length);
-  console.log("target with class_or_id children");
-  console.log(target.children());
-  console.log("target with class_or_id children length");
-  console.log(target.children().length);
+  target=$(`${request.content.val}`);
   }
   if(target!=null && target!=undefined){
   if(request.content.is_in_carousel=="true"){
   let temp_slots=[];
-  for(let i=0;i<3;i++){
+  for(let i=0;i<target.children().length;i++){
     temp_slots.push(
     {
       "name": `${request.content.name}`,
       "section_type": `${request.content.section_type}`,
       "position": `${i}`,
-      "x_position":253,
-      "y_position":222,
-      "width":976,
-      "height":192,
+      "x_position":`${target.children().eq(i).offset().left}`,
+      "y_position":`${target.children().eq(i).offset().top}`,
+      "width":`${target.children().eq(i).width()}`,
+      "height":`${target.children().eq(i).height()}`,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
       "brand":"No Brand",
       "is_in_carousel": "true",
@@ -57,26 +44,40 @@ function update_slots(request){
   
     }
     );
+    var node = document.getElementsByTagName("body")[0];
+
+    domtoimage.toBlob(node).then(function (blob) {
+      saveAs(blob, 'screenshot.png');
+    }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+    });
   }
   
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 } else if(request.content.is_in_carousel=="false"){
   let temp_slots=[];
-  for(let i=0;i<3;i++){
+  for(let i=0;i<target.children().length;i++){
     temp_slots.push(
     {
       "name": `${request.content.name}`,
       "section_type": `${request.content.section_type}`,
       "position": `${i}`,
-      "x_position":565,
-      "y_position":258,
-      "width":976,
-      "height":192,
+      "x_position":`${target.children().eq(i).offset().left}`,
+      "y_position":`${target.children().eq(i).offset().top}`,
+      "width":`${target.children().eq(i).width()}`,
+      "height":`${target.children().eq(i).height()}`,
       "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
       "brand":"No Brand"
   
     }
     );
+    var node = target.children().eq(i);
+
+    domtoimage.toBlob(node).then(function (blob) {
+      window.saveAs(blob, 'screenshot.png');
+    }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+    });
   }
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 
