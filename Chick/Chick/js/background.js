@@ -65,7 +65,7 @@ chrome.action.onClicked.addListener(async tab => {
 // context menu ["page", "selection", "image", "link"]
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
-      "title": "Magpie Hatchery",
+      "title": "Select for Magpie Hatchery",
       "contexts": ["all"],
       "id": "myContextMenuId"
   });

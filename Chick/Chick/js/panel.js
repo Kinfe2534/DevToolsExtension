@@ -68,14 +68,7 @@ backgroundPageConnection.postMessage({
     if(find_status){
       slot_groups.push(request.content);
     }
-    // $(`#slots_identified_${request.content.slot_group_number}`).text(`${request.content.slots_array.length}`);
-      $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
-  
-// slot_groups.push(request);
-// backgroundPageConnection.postMessage({cmd:"log",content:request})
-  backgroundPageConnection.postMessage({cmd:"log",content: slot_groups})
- 
- 
+      $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length); 
       
     }else if(request.cmd=="sending_with_class_or_id"){
       let find_status=true;
@@ -90,12 +83,7 @@ backgroundPageConnection.postMessage({
     if(find_status){
       slot_groups.push(request.content);
     }
-    // $(`#slots_identified_${request.content.slot_group_number}`).text(`${request.content.slots_array.length}`);
       $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
-  
-// slot_groups.push(request);
-// backgroundPageConnection.postMessage({cmd:"log",content:request})
-  backgroundPageConnection.postMessage({cmd:"log",content:slot_groups})
  
   }
     });
@@ -276,29 +264,17 @@ $("#brand_prominence").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="brand_prominence";
-  backgroundPageConnection.postMessage({
-    cmd:"log",
-    content: `${JSON.stringify(slot_groups)}`
-    
-});  
+   
 });
 $("#apple_pay").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
-  json_file_obj.scrapeType="apple_pay";  
-  backgroundPageConnection.postMessage({
-    cmd:"log",
-    content: make_slot_settings_0()
-});  
+  json_file_obj.scrapeType="apple_pay"; 
 });
 $("#stock_delivery").on( "click",function(){
   $(".scrape_type.active").removeClass("active");
   $(this).addClass("active");
   json_file_obj.scrapeType="stock_delivery";  
-  backgroundPageConnection.postMessage({
-    cmd:"log",
-    content: `${$("#is_carousel_checkbox_0").is(":checked")}`
-});  
 });
 // tab change listeners
 $("#type").on( "click",function(){
@@ -378,12 +354,7 @@ function makePost(){
   .then(response=>response.json())
   .then(res => {
     json_file_obj["id"]=res.id;
-    backgroundPageConnection.postMessage({
-      //  name: 'init',
-        cmd:"log",
-        tabId: `${json_file_obj.id}`
-      // tabId:"this is tab id"
-    });  
+  
   });
  }
  function step_one_post(){

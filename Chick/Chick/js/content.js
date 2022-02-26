@@ -1,5 +1,5 @@
 
-var current_target_element=null;
+var current_context_element=null;
 
 function make_settings(){
   return {
@@ -8,7 +8,31 @@ function make_settings(){
   Partner_homepage_url:`${window.location.origin}`,
   resolution:`${$(window).width()}x${$(window).height()}` }
 }
-function update_slots(request,target){
+function update_slots(request){
+  var target=null;
+  if(request.cmd=="make_with_click"){
+  target=current_context_element;    
+  console.log("target with click");
+  console.log(target);
+  console.log("target with click length");
+  console.log(target.length);
+  console.log("target with click children");
+  console.log(target.children());
+  console.log("target with click children length");
+  console.log(target.children().length);
+  }
+  else if(request.cmd=="make_with_class_or_id"){
+   target=$(`${request.content.val}`);
+   console.log("target with class_or_id");
+   console.log(target);   
+  console.log("target with class_or_id length");
+  console.log(target.length);
+  console.log("target with class_or_id children");
+  console.log(target.children());
+  console.log("target with class_or_id children length");
+  console.log(target.children().length);
+  }
+  if(target!=null && target!=undefined){
   if(request.content.is_in_carousel=="true"){
   let temp_slots=[];
   for(let i=0;i<3;i++){
@@ -57,11 +81,17 @@ function update_slots(request,target){
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 
 }
+}else if(target==null){
+  
+
+}else if(target==undefined){
+
+}
 }
 
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
-  console.log("Magpie Hatchery Dev Tools Extension Running............");
-      if(request.cmd=="onConnect"){     
+      if(request.cmd=="onConnect"){        
+      console.log("Magpie Hatchery Dev Tools Extension Running............");
       chrome.runtime.sendMessage({cmd:"settings",content:make_settings()},function(){});
       
       }
@@ -79,15 +109,13 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     window.resizeTo(1280,1024);
   }
   else if(request.cmd=="make_with_click"){
-    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(request,null)},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(request)},function(){});
   }
   else if(request.cmd=="make_with_class_or_id"){
-    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request,null)},function(){});
+    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request)},function(){});
   }
   else if(request.cmd=="save"){
-    console.log(request);
     var k= JSON.stringify(request);
-    console.log(k);
     exportArray(request);
   }
 });
@@ -96,10 +124,10 @@ $(window).on('resize',function(){
   chrome.runtime.sendMessage({cmd:"window_size_changed", 
   resolution:`${$(window).width()}x${$(window).height()}`})
 })
+// return a jquery object
 $(window).on('load', function() {
   document.body.addEventListener("contextmenu",function(e){
-    console.log(`context :${e.target}`);   
-    current_target_element=e.target;
+    current_context_element=$(e.target);
     
   })
 
