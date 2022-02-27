@@ -173,7 +173,8 @@
 					</label>
 					<select type="text" id="slot_group_type_0">
 						<option value="Banner" selected>Banner</option>
-						<option value="Product">Product</option>
+						<option value="Product">Product</option>						
+						<option value="Recommended Product">Recommended Product</option>
 					</select>
 					<div class="slot">
 						<div>
@@ -242,7 +243,8 @@
 					</label>
 					<select type="text" id="slot_group_type_template">
 						<option value="Banner" selected>Banner</option>
-						<option value="Product">Product</option>
+						<option value="Product">Product</option>						
+						<option value="Recommended Product">Recommended Product</option>
 					</select>
 					<div class="slot">
 						<div>
@@ -320,7 +322,7 @@
 		<div id="content" class="columns">
 			<div class="column">
 				<div class="column_inner">
-					<a class="button">
+					<a class="button" id="run_test">
             Run Test
           </a>
 				</div>
@@ -363,8 +365,8 @@
               </p>
 						</div>
 						<div>
-							<span class="slot_number">
-								3 slots
+							<span class="slot_number" id="hero_banner_slots">
+								0 slots
 							</span>
 						</div>
 					</div>
@@ -376,8 +378,8 @@
 							<p class="slot_count">Featured product slots</p>
 						</div>
 						<div>
-							<span class="slot_number">
-								12 slots
+							<span class="slot_number" id="featured_product_slots">
+								0 slots
 							</span>
 						</div>
 					</div>
@@ -389,8 +391,8 @@
 							<p class="slot_count">Recommended product slots</p>
 						</div>
 						<div>
-							<span class="slot_number">
-								3 slots
+							<span class="slot_number" id="recommended_product_slots">
+								0 slots
 							</span>
 						</div>
 					</div>

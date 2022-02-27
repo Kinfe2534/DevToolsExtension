@@ -140,6 +140,14 @@ backgroundPageConnection.postMessage({
       }
       );
       $(`#minus_slot_group_${slot_group_number}`).on("click",function(){
+        // remove imput from list
+        for(let i=0;i<slot_groups.length;i++){
+        if(slot_group_number==slot_groups[i].slot_group_number){
+          slot_groups.splice(i,1);
+          break;
+        }
+      }
+    //
              if(active_slot_group==slot_group_number){
         $(".enter_class_or_id_div_class.active").removeClass("active");
         $(".slot_click_class.active").removeClass("active");
@@ -182,12 +190,7 @@ backgroundPageConnection.postMessage({
 }
 );
 ////////////////////end of add remove//////////////
-// publish tab listeners
-$("#save").on('click',function(){ 
-  make_slot_groups_for_save();
-  backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
- }
-);
+
 // content tab 0 listeners
 function make_slot_settings_0() {
   var name= `${$("#slot_group_name_0").val()}`;
@@ -232,7 +235,18 @@ $("#slot_enter_0").on('click',function(){
   active_slot_group=0;
 }
 );
+// publish tab listeners
+$("#save").on('click',function(){ 
+  make_slot_groups_for_save();
+  backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
+ }
+);
 
+// Test tab listeners
+$("#run_test").on("click",function(){
+  make_slot_groups_for_save();
+  alert(JSON.stringify(json_file_obj,null,'\t'));
+});
  
 // settings tab listeners
 
@@ -306,6 +320,20 @@ $("#publish_tab").on( "click",function(){
   $(this).addClass("active");
   $(".panel.active").removeClass("active");
   $("#panel5").addClass("active");
+  var hero_length=0;
+  var featured_length=0;
+  var recommended_length=0;
+  for(let i=0;i<slot_groups.length;i++){
+    
+    for(let j=0;j<slot_groups[i].slots_array.length;j++){
+      if(slot_groups[i].slots_array[j].section_type=="Banner"){hero_length+=1;};
+      if(slot_groups[i].slots_array[j].section_type=="Product"){featured_length+=1;};
+      if(slot_groups[i].slots_array[j].section_type=="Recommended Product"){recommended_length+=1;};
+    }
+  }
+  $("#hero_banner_slots").text(hero_length);
+  $("#featured_product_slots").text(featured_length);
+  $("#recommended_product_slots").text(recommended_length);
 });
 // previous and next steps listeners
 // panel 1

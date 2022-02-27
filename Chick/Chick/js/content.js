@@ -32,7 +32,7 @@ function update_slots(request){
       "y_position":`${target.children().eq(i).offset().top}`,
       "width":`${target.children().eq(i).width()}`,
       "height":`${target.children().eq(i).height()}`,
-      "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
+      "screenshot":`${Math.floor(Math.random()*90000000) + 10000000}.png`,
       "brand":"No Brand",
       "is_in_carousel": "true",
       "carousel_total_frames":"",
@@ -66,7 +66,7 @@ function update_slots(request){
       "y_position":`${target.children().eq(i).offset().top}`,
       "width":`${target.children().eq(i).width()}`,
       "height":`${target.children().eq(i).height()}`,
-      "screenshot":"https://magpie-images.s3-eu-west-1.amazonaws.com/seeder/bestbuy/Bestbuy-Horizontalbanner-smart_home_security.png",
+      "screenshot":`${Math.floor(Math.random()*90000000) + 10000000}.png`,
       "brand":"No Brand"
   
     }
@@ -116,7 +116,6 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request)},function(){});
   }
   else if(request.cmd=="save"){
-    var k= JSON.stringify(request);
     exportArray(request);
   }
 });
