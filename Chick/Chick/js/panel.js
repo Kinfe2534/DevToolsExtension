@@ -5,7 +5,6 @@ var active_slot_group=0;
 var click_or_enter="click";
 var next_slot_group_number=1;
 var slot_click_settings=make_slot_settings_0();
-var slot_gorups_for_save=[];
 var slot_groups=[];
 var json_file_obj={
   id:"",
@@ -240,6 +239,11 @@ $("#save").on('click',function(){
   make_slot_groups_for_save();
   backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
  }
+);
+$("#screenshot").on('click',function(){
+  make_slot_groups_for_save();
+  backgroundPageConnection.postMessage({cmd:"screenshot",content:json_file_obj});
+}
 );
 
 // Test tab listeners

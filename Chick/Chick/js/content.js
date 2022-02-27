@@ -1,5 +1,6 @@
 
 var current_context_element=null;
+var blob_array=[];
 
 function make_settings(){
   return {
@@ -11,7 +12,7 @@ function make_settings(){
 function update_slots(request){
   // google suggested search items selector div.AJLUJb
   // https://www.javatpoint.com/jquery-offset-vs-jquery-position
-  //https://ourcodeworld.com/articles/read/38/how-to-capture-an-image-from-a-dom-element-with-javascript
+  // https://ourcodeworld.com/articles/read/38/how-to-capture-an-image-from-a-dom-element-with-javascript
   var target=null;
   if(request.cmd=="make_with_click"){
   target=current_context_element;    
@@ -23,40 +24,44 @@ function update_slots(request){
   if(request.content.is_in_carousel=="true"){
   let temp_slots=[];
   for(let i=0;i<target.children().length;i++){
+    let rand_num=Math.floor(Math.random()*90000000) + 10000000;
     temp_slots.push(
     {
       "name": `${request.content.name}`,
       "section_type": `${request.content.section_type}`,
       "position": `${i}`,
-      "x_position":`${target.children().eq(i).offset().left}`,
-      "y_position":`${target.children().eq(i).offset().top}`,
-      "width":`${target.children().eq(i).width()}`,
-      "height":`${target.children().eq(i).height()}`,
-      "screenshot":`${Math.floor(Math.random()*90000000) + 10000000}.png`,
+      "x_position":"null",
+      "y_position":"null",
+      "width":"null",
+      "height":"null",
       "brand":"No Brand",
       "is_in_carousel": "true",
       "carousel_total_frames":"",
       "carousel_frame_number":"",
-      "carousel_x_position":"",
-      "carousel_y_position":"",
-      "carousel_width":"",
-      "carousel_height":""
+      "carousel_x_position":`${target.children().eq(i).offset().left}`,
+      "carousel_y_position":`${target.children().eq(i).offset().top}`,
+      "carousel_width":`${target.children().eq(i).width()}`,
+      "carousel_height":`${target.children().eq(i).height()}`,      
+      "screenshot":`${rand_num}.png`,
   
     }
     );
-    var node = document.getElementsByTagName("body")[0];
-
-    domtoimage.toBlob(node).then(function (blob) {
-      saveAs(blob, 'screenshot.png');
-    }).catch(function (error) {
-        console.error('oops, something went wrong!', error);
-    });
+    //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
+   var node= target.children().get(i);
+   domtoimage.toPng(node,{ quality: 0.95 }).then(function(blob){
+     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
+    // blob_array[rand_num]=blob;
+          // saveAs(blob,"screenshot.png");
+       }).catch(function (error) {
+           console.error('oops, something went wrong!', error);
+       });
   }
   
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 } else if(request.content.is_in_carousel=="false"){
   let temp_slots=[];
   for(let i=0;i<target.children().length;i++){
+    let rand_num=Math.floor(Math.random()*90000000) + 10000000;
     temp_slots.push(
     {
       "name": `${request.content.name}`,
@@ -66,18 +71,20 @@ function update_slots(request){
       "y_position":`${target.children().eq(i).offset().top}`,
       "width":`${target.children().eq(i).width()}`,
       "height":`${target.children().eq(i).height()}`,
-      "screenshot":`${Math.floor(Math.random()*90000000) + 10000000}.png`,
+      "screenshot":`${rand_num}.png`,
       "brand":"No Brand"
   
     }
     );
-    var node = target.children().eq(i);
-
-    domtoimage.toBlob(node).then(function (blob) {
-      window.saveAs(blob, 'screenshot.png');
-    }).catch(function (error) {
-        console.error('oops, something went wrong!', error);
-    });
+    //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
+   var node= target.children().get(i);
+     domtoimage.toPng(node,{ quality: 0.95 }).then(function(blob){
+       blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
+      // blob_array[rand_num]=blob;
+            // saveAs(blob,"screenshot.png");
+         }).catch(function (error) {
+             console.error('oops, something went wrong!', error);
+         });
   }
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 
@@ -98,7 +105,7 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
       }
   else if(request.cmd=="log"){
     console.log(request);
-  }  
+  } 
   else if(request.cmd=="resize_mobile"){
     // not possible to resize window that is not opened by window.open
     //https://stackoverflow.com/questions/7602078/javascripts-window-resizeto-isnt-working
@@ -117,7 +124,25 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
   }
   else if(request.cmd=="save"){
     exportArray(request);
-  }
+  }else if(request.cmd=="screenshot"){
+    if(false){
+      for(let i=0;i<blob_array.length;i++){
+        saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`);}
+    }
+    if(true){
+      for(let i=0;i<blob_array.length;i++){
+        for(let j=0;j<request.content.slots.length;j++){
+          if(blob_array[i].unique_id==request.content.slots[j].screenshot){
+        saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`);
+        break;
+          }
+        }
+      }
+       
+    }
+  
+
+  } 
 });
 ///////////////////////////////////////////////////////////////////////
 $(window).on('resize',function(){
@@ -144,3 +169,9 @@ function exportArray(input){
     ////export array to file logic
 }
 
+// screeshot
+function save_screenshot(){ 
+  for(let i=0;i<blob_array.length;i++){
+    saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`)
+  }
+      }
