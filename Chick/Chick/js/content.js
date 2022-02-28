@@ -133,7 +133,7 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
       for(let i=0;i<blob_array.length;i++){
         for(let j=0;j<request.content.slots.length;j++){
           if(blob_array[i].unique_id==request.content.slots[j].screenshot){
-        saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`);
+        saveAs(blob_array[i].blob,`${blob_array[i].unique_id}`);
         break;
           }
         }
@@ -151,6 +151,8 @@ $(window).on('resize',function(){
 })
 // return a jquery object
 $(window).on('load', function() {
+   
+  chrome.runtime.sendMessage({cmd:"settings",content:make_settings()},function(){});
   document.body.addEventListener("contextmenu",function(e){
     current_context_element=$(e.target);
     
