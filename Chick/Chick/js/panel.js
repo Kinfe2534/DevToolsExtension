@@ -84,6 +84,8 @@ backgroundPageConnection.postMessage({
     }
       $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
  
+  }else if(request.cmd=="hover_count"){
+    $(`#slots_hover_${active_slot_group}`).text(request.content); 
   }
     });
 //
@@ -104,7 +106,8 @@ backgroundPageConnection.postMessage({
         template.find("#slot_group_template").attr('id',`slot_group_${slot_group_number}`);
         template.find("#slot_group_name_template").attr('id',`slot_group_name_${slot_group_number}`);
         template.find("#slot_group_type_template").attr('id',`slot_group_type_${slot_group_number}`);
-        template.find("#slots_identified_template").attr('id',`slots_identified_${slot_group_number}`);
+        template.find("#slots_identified_template").attr('id',`slots_identified_${slot_group_number}`);        
+        template.find("#slots_hover_template").attr('id',`slots_hover_${slot_group_number}`);
         template.find("#is_carousel_checkbox_template").attr('id',`is_carousel_checkbox_${slot_group_number}`);
         template.find("#slot_click_template").attr('id',`slot_click_${slot_group_number}`);      
         template.find("#slot_enter_template").attr('id',`slot_enter_${slot_group_number}`); 
@@ -125,6 +128,7 @@ backgroundPageConnection.postMessage({
           $(`#enter_class_or_id_div_id_${slot_group_number}`).addClass("active");
           click_or_enter="enter";
           active_slot_group=slot_group_number;
+          backgroundPageConnection.postMessage({cmd:"hide_hover",content:""});
 
       }
       );
@@ -136,6 +140,7 @@ backgroundPageConnection.postMessage({
         click_or_enter="click";
         active_slot_group=slot_group_number;
         slot_click_settings= make_slot_settings();
+        backgroundPageConnection.postMessage({cmd:"show_hover",content:""});
       }
       );
       $(`#minus_slot_group_${slot_group_number}`).on("click",function(){
@@ -222,6 +227,7 @@ $("#slot_click_0").on('click',function(){
   click_or_enter="click";
   active_slot_group=0;
   slot_click_settings=make_slot_settings_0();
+  backgroundPageConnection.postMessage({cmd:"show_hover",content:""});
 }
 );
 $("#slot_enter_0").on('click',function(){
@@ -232,6 +238,7 @@ $("#slot_enter_0").on('click',function(){
   $("#enter_class_or_id_div_id_0").addClass("active");
   click_or_enter="enter";
   active_slot_group=0;
+  backgroundPageConnection.postMessage({cmd:"hide_hover",content:""});
 }
 );
 // publish tab listeners

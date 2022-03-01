@@ -1,7 +1,8 @@
 
 var current_context_element=null;
 var blob_array=[];
-
+var show_hide_status="false";
+var enter_click_status="click";
 function make_settings(){
   return {
   url:`${window.location.href}`,
@@ -23,6 +24,38 @@ function update_slots(request){
   if(target!=null && target!=undefined){
   if(request.content.is_in_carousel=="true"){
   let temp_slots=[];
+  // slot for the parent
+  let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+  temp_slots.push(
+    {
+      "name": `${request.content.name}`,
+      "section_type": `${request.content.section_type}`,
+      "position": `${target.children().length}`,
+      "x_position":"null",
+      "y_position":"null",
+      "width":"null",
+      "height":"null",
+      "brand":"No Brand",
+      "is_in_carousel": "true",
+      "carousel_total_frames":"",
+      "carousel_frame_number":"",
+      "carousel_x_position":`${target.offset().left}`,
+      "carousel_y_position":`${target.offset().top}`,
+      "carousel_width":`${target.width()}`,
+      "carousel_height":`${target.height()}`,      
+      "screenshot":`${rand_num}.png`,
+  
+    }
+    );
+    domtoimage.toPng(target.get(0),{ quality: 1 }).then(function(blob){
+     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
+    // blob_array[rand_num]=blob;
+          // saveAs(blob,"screenshot.png");
+       }).catch(function (error) {
+           console.error('oops, something went wrong!', error);
+       });
+  
+    // slots for children
   for(let i=0;i<target.children().length;i++){
     let rand_num=Math.floor(Math.random()*90000000) + 10000000;
     temp_slots.push(
@@ -48,7 +81,7 @@ function update_slots(request){
     );
     //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
    var node= target.children().get(i);
-   domtoimage.toPng(node,{ quality: 0.95 }).then(function(blob){
+   domtoimage.toPng(node,{ quality: 1 }).then(function(blob){
      blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
     // blob_array[rand_num]=blob;
           // saveAs(blob,"screenshot.png");
@@ -60,6 +93,31 @@ function update_slots(request){
   return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
 } else if(request.content.is_in_carousel=="false"){
   let temp_slots=[];
+  
+  let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+  temp_slots.push(
+  {
+    "name": `${request.content.name}`,
+    "section_type": `${request.content.section_type}`,
+    "position": `${target.children().length}`,
+    "x_position":`${target.offset().left}`,
+    "y_position":`${target.offset().top}`,
+    "width":`${target.width()}`,
+    "height":`${target.height()}`,
+    "screenshot":`${rand_num}.png`,
+    "brand":"No Brand"
+
+  }
+  );
+  //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
+ 
+   domtoimage.toPng(target.get(0),{ quality: 1 }).then(function(blob){
+     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
+    // blob_array[rand_num]=blob;
+          // saveAs(blob,"screenshot.png");
+       }).catch(function (error) {
+           console.error('oops, something went wrong!', error);
+       });
   for(let i=0;i<target.children().length;i++){
     let rand_num=Math.floor(Math.random()*90000000) + 10000000;
     temp_slots.push(
@@ -78,7 +136,7 @@ function update_slots(request){
     );
     //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
    var node= target.children().get(i);
-     domtoimage.toPng(node,{ quality: 0.95 }).then(function(blob){
+     domtoimage.toPng(node,{ quality: 1 }).then(function(blob){
        blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
       // blob_array[rand_num]=blob;
             // saveAs(blob,"screenshot.png");
@@ -105,7 +163,27 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
       }
   else if(request.cmd=="log"){
     console.log(request);
-  } 
+  }  
+  else if(request.cmd=="hover"){
+    if(show_hide_status=="false" && enter_click_status=="click"){
+      show_hide_status="true";
+      show_hide_hover();
+    }else if(show_hide_status=="true" && enter_click_status=="click"){
+      show_hide_status="false";
+      $("*").unbind('mouseenter mouseleave');
+    }
+    
+  }  
+  else if(request.cmd=="hide_hover"){
+    enter_click_status="enter";
+      $("*").unbind('mouseenter mouseleave');
+  }
+  else if(request.cmd=="show_hover"){
+    enter_click_status="click";
+    if(show_hide_status=="true"){
+      show_hide_hover();
+    }
+  }
   else if(request.cmd=="resize_mobile"){
     // not possible to resize window that is not opened by window.open
     //https://stackoverflow.com/questions/7602078/javascripts-window-resizeto-isnt-working
@@ -157,6 +235,7 @@ $(window).on('load', function() {
     current_context_element=$(e.target);
     
   })
+// show_hide_hover();
 
 });
 
@@ -177,3 +256,34 @@ function save_screenshot(){
     saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`)
   }
       }
+  
+function show_hide_hover (){ 
+  $("*").hover(
+  // mouse in listener
+      function(e){
+        
+                e.stopPropagation();
+                
+                $("*").removeClass("hover");
+                $("*").removeClass("hover_children");
+                $(this).addClass("hover");
+                $(this).children().addClass("hover_children");
+                chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length+1},function(){});
+                $(this).on("click",function(e){
+                  current_context_element=$(e.target);
+                e.stopPropagation();
+                chrome.runtime.sendMessage({cmd:"make_with_click",content:""},function(){});
+                });
+
+      }, 
+      // mouse leave listener
+      function(e){
+                  $("*").removeClass("hover");
+                  $("*").removeClass("hover_children");
+                  $(this).parent().addClass("hover");
+                  $(this).parent().children().addClass("hover_children");
+                  chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).parent().children().length+1},function(){});
+      }
+  )
+
+}
