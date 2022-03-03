@@ -256,7 +256,12 @@ function save_screenshot(){
     saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`)
   }
       }
-  
+  var this_callback_fun=function(e){
+    console.log(e.target);
+    current_context_element=$(e.target);
+  e.stopPropagation();
+  chrome.runtime.sendMessage({cmd:"make_with_click",content:""},function(){});
+  };
 function show_hide_hover (){ 
   $("*").hover(
   // mouse in listener
@@ -269,11 +274,7 @@ function show_hide_hover (){
                 $(this).addClass("hover");
                 $(this).children().addClass("hover_children");
                 chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length+1},function(){});
-                $(this).on("click",function(e){
-                  current_context_element=$(e.target);
-                e.stopPropagation();
-                chrome.runtime.sendMessage({cmd:"make_with_click",content:""},function(){});
-                });
+                $(this).on("click",this_callback_fun);
 
       }, 
       // mouse leave listener
@@ -282,6 +283,7 @@ function show_hide_hover (){
                   $("*").removeClass("hover_children");
                   $(this).parent().addClass("hover");
                   $(this).parent().children().addClass("hover_children");
+                  $(this).off("click",this_callback_fun);
                   chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).parent().children().length+1},function(){});
       }
   )
