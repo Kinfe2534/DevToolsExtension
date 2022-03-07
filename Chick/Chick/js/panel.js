@@ -55,7 +55,7 @@ backgroundPageConnection.postMessage({
       backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});}
     }
     else if(request.cmd=="sending_with_click"){
-      
+      if(`${$(`#replace_extend_checkbox_${request.content.slot_group_number}`).is(":checked")}`=="false"){
       let find_status=true;
       for(let i=0;i<slot_groups.length;i++){
         if(request.content.slot_group_number==slot_groups[i].slot_group_number){
@@ -69,7 +69,28 @@ backgroundPageConnection.postMessage({
       slot_groups.push(request.content);
     }
       $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length); 
-      
+  }
+  else if(`${$(`#replace_extend_checkbox_${request.content.slot_group_number}`).is(":checked")}`=="true"){
+   let find_status=true;
+    for(let i=0;i<slot_groups.length;i++){
+      if(request.content.slot_group_number==slot_groups[i].slot_group_number){
+        let len=slot_groups[i].slots_array.length;
+        for(let j=0;j<request.content.slots_array.length;j++){
+          request.content.slots_array[j].position=len+j;
+          slot_groups[i].slots_array.push(request.content.slots_array[j]);
+        }
+        find_status=false;
+        $(`#slots_identified_${request.content.slot_group_number}`).text(slot_groups[i].slots_array.length); 
+        break;
+      }
+   
+  }
+ if(find_status){
+    slot_groups.push(request.content);
+    $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length); 
+  }
+    
+}
     }else if(request.cmd=="sending_with_class_or_id"){
       let find_status=true;
       for(let i=0;i<slot_groups.length;i++){
@@ -110,6 +131,8 @@ backgroundPageConnection.postMessage({
         template.find("#slots_identified_template").attr('id',`slots_identified_${slot_group_number}`);        
         template.find("#slots_hover_template").attr('id',`slots_hover_${slot_group_number}`);
         template.find("#is_carousel_checkbox_template").attr('id',`is_carousel_checkbox_${slot_group_number}`);
+        
+        template.find("#replace_extend_checkbox_template").attr('id',`replace_extend_checkbox_${slot_group_number}`);
         template.find("#slot_click_template").attr('id',`slot_click_${slot_group_number}`);      
         template.find("#slot_enter_template").attr('id',`slot_enter_${slot_group_number}`); 
 
