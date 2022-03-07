@@ -51,6 +51,7 @@ backgroundPageConnection.postMessage({
       json_file_obj.resolution=`${request.resolution}`
     }else if(request.cmd=="make_with_click"){
       if(click_or_enter=="click"){
+        $(`#slot_click_${active_slot_group}`).click();
       backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});}
     }
     else if(request.cmd=="sending_with_click"){
@@ -205,7 +206,7 @@ function make_slot_settings_0() {
       return  {slot_group_number:"0",
       "name": name,
       "section_type": section_type,
-      "is_in_carousel": is_in_carousel,                
+      "is_in_carousel": is_in_carousel,
       "val":val
       }
                 }
