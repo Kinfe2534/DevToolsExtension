@@ -76,7 +76,7 @@ backgroundPageConnection.postMessage({
       if(request.content.slot_group_number==slot_groups[i].slot_group_number){
         let len=slot_groups[i].slots_array.length;
         for(let j=0;j<request.content.slots_array.length;j++){
-          request.content.slots_array[j].position=len+j;
+          request.content.slots_array[j].position=`${len+j}`;
           slot_groups[i].slots_array.push(request.content.slots_array[j]);
         }
         find_status=false;

@@ -260,19 +260,23 @@ function show_hide_hover (){
                 
                 $("*").removeClass("hover");
                 $("*").removeClass("hover_children");
+                $("*").off("click",this_callback_fun);
+
                 $(this).addClass("hover");
                 $(this).children().addClass("hover_children");
-                chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length+1},function(){});
                 $(this).on("click",this_callback_fun);
+                chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length+1},function(){});
 
       }, 
       // mouse leave listener
       function(e){
                   $("*").removeClass("hover");
                   $("*").removeClass("hover_children");
+                  $("*").off("click",this_callback_fun);
+
                   $(this).parent().addClass("hover");
-                  $(this).parent().children().addClass("hover_children");
-                  $(this).off("click",this_callback_fun);
+                  $(this).parent().children().addClass("hover_children");                 
+                  $(this).parent().on("click",this_callback_fun);
                   chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).parent().children().length+1},function(){});
       }
   )
