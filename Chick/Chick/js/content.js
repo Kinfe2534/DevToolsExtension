@@ -43,35 +43,23 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     window.resizeTo(1280,1024);
   }
   else if(request.cmd=="make_with_click"){
-        make_slot_blob_array(request).then(function(slot_blob_array){
-        console.log("resolved " + slot_blob_array.length);
-        console.log(slot_blob_array);
-        chrome.runtime.sendMessage({cmd:"sending_with_both",content: slot_blob_array},function(){});
+    make_slot_blob_array(request).then(function(content){
+      content.slot_blob_array.sort(function(a,b){return a.slot.position-b.slot.position});
+      console.log(content);
+      chrome.runtime.sendMessage({cmd:"sending_with_both",content: content},function(){});
 })
+
   
   }
   else if(request.cmd=="make_with_class_or_id"){
     
-    make_slot_blob_array(request).then(function(slot_blob_array){
-      console.log("resolved " + slot_blob_array.length);
-      console.log(slot_blob_array);
-      chrome.runtime.sendMessage({cmd:"sending_with_both",content: slot_blob_array},function(){});
+    make_slot_blob_array(request).then(function(content){
+      content.slot_blob_array.sort(function(a,b){return a.slot.position-b.slot.position});
+      console.log(content);
+      chrome.runtime.sendMessage({cmd:"sending_with_both",content: content},function(){});
 })
 
 }
-  else if(request.cmd=="save"){
-    exportArray(request);
-  }else if(request.cmd=="screenshot"){
-       
-      for(let i=0;i<blob_array.length;i++){
-        for(let j=0;j<request.content.slots.length;j++){
-          if(blob_array[i].unique_id==request.content.slots[j].screenshot){
-        saveAs(blob_array[i].blob,`${blob_array[i].unique_id}`);
-        break;
-          }
-        }
-      }
-         } 
 });
 ///////////////////////////////////////////////////////////////////////
 $(window).on('resize',function(){
@@ -89,17 +77,6 @@ $(window).on('load', function() {
 // show_hide_hover();
 
 });
-
-/////// exports a text content within an array/////////
-//https://www.npmjs.com/package/file-saver
-// first convert the obj to text or provide an array with a text content
-function exportArray(input){
-  //https://stackoverflow.com/questions/16591742/is-there-a-function-to-stringify-json-with-whitespace
-  var k= JSON.stringify(input,null,'\t');
-    var blob= new Blob([k],  {type: "text/plain;charset=utf-8"});
-    saveAs(blob,"DevToolsOutput.json");
-    ////export array to file logic
-}
 
 // screeshot
 function save_screenshot(){ 
@@ -154,8 +131,7 @@ function make_settings(){
 }
 function make_slot_blob_array(request){
   return new Promise(function(resolve,reject){
-    
-    var slot_blob_array=[];
+    var content={slot_group_number:request.content.slot_group_number, slot_blob_array:[]};
     var resolve_condition_counter=0;
     var target=null;
     if(request.cmd=="make_with_click"){
@@ -174,8 +150,6 @@ function make_slot_blob_array(request){
       //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
      var node= target.children().get(i);
      domtoimage.toBlob(node).then(function(blob){
-       console.log("resolve counter "+resolve_condition_counter+"index"+i);
-  
           const reader = new FileReader();
           reader.readAsDataURL(blob); 
           reader.onloadend = function() {
@@ -199,11 +173,11 @@ function make_slot_blob_array(request){
                                     "carousel_width":`${target.children().eq(i).width()}`,
                                     "carousel_height":`${target.children().eq(i).height()}`,      
                                     "screenshot":`${rand_num}.png`,        }   
-          slot_blob_array.push(slot_blob_combo_obj)  ;
+          content.slot_blob_array.push(slot_blob_combo_obj)  ;
           if(resolve_condition_counter<target_length){
             resolve_condition_counter+=1;
           }
-          else{resolve(slot_blob_array);}   
+          else{resolve(content);}   
             
           }
   
@@ -236,24 +210,22 @@ function make_slot_blob_array(request){
                                     "carousel_width":`${target.width()}`,
                                     "carousel_height":`${target.height()}`,      
                                     "screenshot":`${rand_num}.png`,      }
-            slot_blob_array.push(slot_blob_combo_obj)  ;
+            content.slot_blob_array.push(slot_blob_combo_obj)  ;
             if(resolve_condition_counter<target_length){
               resolve_condition_counter+=1;
             }
-            else{resolve(slot_blob_array);} 
+            else{resolve(content);} 
           }
          }).catch(function (error) {
              console.error('oops, something went wrong!', error);
          });
     
-  //  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
   } else if(request.content.is_in_carousel=="false"){
                // slots for children
     for(let i=0;i<target_length;i++){
       
      var node= target.children().get(i);
        domtoimage.toBlob(node).then(function(blob){
-        console.log("resolve counter "+resolve_condition_counter+"index"+i);
         const reader = new FileReader();
         reader.readAsDataURL(blob); 
         reader.onloadend = function() {          
@@ -269,11 +241,11 @@ function make_slot_blob_array(request){
                                   "height":`${target.children().eq(i).height()}`,
                                   "screenshot":`${rand_num}.png`,
                                   "brand":"No Brand"     }
-        slot_blob_array.push(slot_blob_combo_obj)  ;
+      content.slot_blob_array.push(slot_blob_combo_obj)  ;
         if(resolve_condition_counter<target_length){
           resolve_condition_counter+=1;
         }
-        else{resolve(slot_blob_array);} 
+        else{resolve(content);} 
             
         }
         
@@ -298,11 +270,11 @@ function make_slot_blob_array(request){
                                 "height":`${target.height()}`,
                                 "screenshot":`${rand_num}.png`,
                                 "brand":"No Brand"  }
-      slot_blob_array.push(slot_blob_combo_obj)  ;
+    content.slot_blob_array.push(slot_blob_combo_obj)  ;
       if(resolve_condition_counter<target_length){
         resolve_condition_counter+=1;
       }
-      else{resolve(slot_blob_array);} 
+      else{resolve(content);} 
       }
       
          
