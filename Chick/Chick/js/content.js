@@ -1,156 +1,7 @@
 
 var current_context_element=null;
-var blob_array=[];
 var show_hide_status="false";
 var enter_click_status="click";
-function make_settings(){
-  return {
-  url:`${window.location.href}`,
-  Url_name:`${document.title}`,
-  Partner_homepage_url:`${window.location.origin}`,
-  resolution:`${$(window).width()}x${$(window).height()}` }
-}
-function update_slots(request){
-  // google suggested search items selector div.AJLUJb
-  // https://www.javatpoint.com/jquery-offset-vs-jquery-position
-  // https://ourcodeworld.com/articles/read/38/how-to-capture-an-image-from-a-dom-element-with-javascript
-  console.log("is in a carousel "+ request.content.is_in_carousel);
-  var target=null;
-  if(request.cmd=="make_with_click"){
-  target=current_context_element;    
-  }
-  else if(request.cmd=="make_with_class_or_id"){
-  target=$(`${request.content.val}`);
-  }
-  if(target!=null && target!=undefined){
-  if(request.content.is_in_carousel=="true"){
-  let temp_slots=[];
-      // slots for children
-  for(let i=0;i<target.children().length;i++){
-    let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-    temp_slots.push(
-    {
-      "name": `${request.content.name}`,
-      "section_type": `${request.content.section_type}`,
-      "position": `${i}`,
-      "x_position":"null",
-      "y_position":"null",
-      "width":"null",
-      "height":"null",
-      "brand":"No Brand",
-      "is_in_carousel": "true",
-      "carousel_total_frames":"",
-      "carousel_frame_number":"",
-      "carousel_x_position":`${target.children().eq(i).offset().left}`,
-      "carousel_y_position":`${target.children().eq(i).offset().top}`,
-      "carousel_width":`${target.children().eq(i).width()}`,
-      "carousel_height":`${target.children().eq(i).height()}`,      
-      "screenshot":`${rand_num}.png`,
-  
-    }
-    );
-    //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
-   var node= target.children().get(i);
-   domtoimage.toPng(node,{ quality: 1 }).then(function(blob){
-     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
-    // blob_array[rand_num]=blob;
-          // saveAs(blob,"screenshot.png");
-       }).catch(function (error) {
-           console.error('oops, something went wrong!', error);
-       });
-  }
-  // slot for the parent
-  let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-  temp_slots.push(
-    {
-      "name": `${request.content.name}`,
-      "section_type": `${request.content.section_type}`,
-      "position": `${target.children().length}`,
-      "x_position":"null",
-      "y_position":"null",
-      "width":"null",
-      "height":"null",
-      "brand":"No Brand",
-      "is_in_carousel": "true",
-      "carousel_total_frames":"",
-      "carousel_frame_number":"",
-      "carousel_x_position":`${target.offset().left}`,
-      "carousel_y_position":`${target.offset().top}`,
-      "carousel_width":`${target.width()}`,
-      "carousel_height":`${target.height()}`,      
-      "screenshot":`${rand_num}.png`,
-  
-    }
-    );
-    domtoimage.toPng(target.get(0),{ quality: 1 }).then(function(blob){
-     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
-    // blob_array[rand_num]=blob;
-          // saveAs(blob,"screenshot.png");
-       }).catch(function (error) {
-           console.error('oops, something went wrong!', error);
-       });
-  
-  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
-} else if(request.content.is_in_carousel=="false"){
-  let temp_slots=[];
-             // slots for children
-  for(let i=0;i<target.children().length;i++){
-    let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-    temp_slots.push(
-    {
-      "name": `${request.content.name}`,
-      "section_type": `${request.content.section_type}`,
-      "position": `${i}`,
-      "x_position":`${target.children().eq(i).offset().left}`,
-      "y_position":`${target.children().eq(i).offset().top}`,
-      "width":`${target.children().eq(i).width()}`,
-      "height":`${target.children().eq(i).height()}`,
-      "screenshot":`${rand_num}.png`,
-      "brand":"No Brand"
-  
-    }
-    );
-    //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
-   var node= target.children().get(i);
-     domtoimage.toPng(node,{ quality: 1 }).then(function(blob){
-       blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
-      // blob_array[rand_num]=blob;
-            // saveAs(blob,"screenshot.png");
-         }).catch(function (error) {
-             console.error('oops, something went wrong!', error);
-         });
-  }
-  // slot for the parent
-  let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-  temp_slots.push(
-  {
-    "name": `${request.content.name}`,
-    "section_type": `${request.content.section_type}`,
-    "position": `${target.children().length}`,
-    "x_position":`${target.offset().left}`,
-    "y_position":`${target.offset().top}`,
-    "width":`${target.width()}`,
-    "height":`${target.height()}`,
-    "screenshot":`${rand_num}.png`,
-    "brand":"No Brand"
-
-  }
-  ); 
-   domtoimage.toPng(target.get(0),{ quality: 1 }).then(function(blob){
-     blob_array.push({unique_id:`${rand_num}.png`,blob:blob})
-       }).catch(function (error) {
-           console.error('oops, something went wrong!', error);
-       });
-  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
-
-}
-}else if(target==null){
-  
-
-}else if(target==undefined){
-
-}
-}
 
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
       if(request.cmd=="onConnect"){        
@@ -192,11 +43,22 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     window.resizeTo(1280,1024);
   }
   else if(request.cmd=="make_with_click"){
-    chrome.runtime.sendMessage({cmd:"sending_with_click",content: update_slots(request)},function(){});
+        make_slot_blob_array(request).then(function(slot_blob_array){
+        console.log("resolved " + slot_blob_array.length);
+        console.log(slot_blob_array);
+        chrome.runtime.sendMessage({cmd:"sending_with_both",content: slot_blob_array},function(){});
+})
+  
   }
   else if(request.cmd=="make_with_class_or_id"){
-    chrome.runtime.sendMessage({cmd:"sending_with_class_or_id",content:update_slots(request)},function(){});
-  }
+    
+    make_slot_blob_array(request).then(function(slot_blob_array){
+      console.log("resolved " + slot_blob_array.length);
+      console.log(slot_blob_array);
+      chrome.runtime.sendMessage({cmd:"sending_with_both",content: slot_blob_array},function(){});
+})
+
+}
   else if(request.cmd=="save"){
     exportArray(request);
   }else if(request.cmd=="screenshot"){
@@ -245,15 +107,16 @@ function save_screenshot(){
     saveAs(blob_array[i].blob,`${blob_array[i].unique_id}.png`)
   }
       }
-  var this_callback_fun=function(e){
-    console.log(e.target);
+// this call back function
+var this_callback_fun=function(e){
     current_context_element=$(e.target);
-  e.stopPropagation();
-  chrome.runtime.sendMessage({cmd:"make_with_click",content:""},function(){});
+    e.stopPropagation();
+    chrome.runtime.sendMessage({cmd:"make_with_click",content:""},function(){});
   };
+
 function show_hide_hover (){ 
   $("*").hover(
-  // mouse in listener
+// mouse in listener
       function(e){
         
                 e.stopPropagation();
@@ -281,4 +144,180 @@ function show_hide_hover (){
       }
   )
 
+}
+function make_settings(){
+  return {
+  url:`${window.location.href}`,
+  Url_name:`${document.title}`,
+  Partner_homepage_url:`${window.location.origin}`,
+  resolution:`${$(window).width()}x${$(window).height()}` }
+}
+function make_slot_blob_array(request){
+  return new Promise(function(resolve,reject){
+    
+    var slot_blob_array=[];
+    var resolve_condition_counter=0;
+    var target=null;
+    if(request.cmd=="make_with_click"){
+    target=current_context_element;    
+    }
+    else if(request.cmd=="make_with_class_or_id"){
+    target=$(`${request.content.val}`);
+    }    
+    var target_length=target.children().length;
+
+    if(target!=null && target!=undefined){
+    if(request.content.is_in_carousel=="true"){  
+        // slots for children
+    for(let i=0;i<target_length;i++){
+      
+      //var node=document.querySelector("div.AJLUJb").childNodes[i]; 
+     var node= target.children().get(i);
+     domtoimage.toBlob(node).then(function(blob){
+       console.log("resolve counter "+resolve_condition_counter+"index"+i);
+  
+          const reader = new FileReader();
+          reader.readAsDataURL(blob); 
+          reader.onloadend = function() {
+            
+          let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+          let slot_blob_combo_obj={slot:null,blobAsString:null};    
+            slot_blob_combo_obj.blobAsString = reader.result;    
+            slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
+                                    "section_type": `${request.content.section_type}`,
+                                    "position": `${i}`,
+                                    "x_position":"null",
+                                    "y_position":"null",
+                                    "width":"null",
+                                    "height":"null",
+                                    "brand":"No Brand",
+                                    "is_in_carousel": "true",
+                                    "carousel_total_frames":"",
+                                    "carousel_frame_number":"",
+                                    "carousel_x_position":`${target.children().eq(i).offset().left}`,
+                                    "carousel_y_position":`${target.children().eq(i).offset().top}`,
+                                    "carousel_width":`${target.children().eq(i).width()}`,
+                                    "carousel_height":`${target.children().eq(i).height()}`,      
+                                    "screenshot":`${rand_num}.png`,        }   
+          slot_blob_array.push(slot_blob_combo_obj)  ;
+          if(resolve_condition_counter<target_length){
+            resolve_condition_counter+=1;
+          }
+          else{resolve(slot_blob_array);}   
+            
+          }
+  
+  
+         }).catch(function (error) {
+             console.error('oops, something went wrong!', error);
+         });
+    }
+    // slot for the parent
+        domtoimage.toBlob(target.get(0)).then(function(blob){
+        const reader = new FileReader();
+          reader.readAsDataURL(blob); 
+          reader.onloadend = function() {          
+          let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+          let slot_blob_combo_obj={slot:null,blobAsString:null};    
+            slot_blob_combo_obj.blobAsString = reader.result; 
+            slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
+                                    "section_type": `${request.content.section_type}`,
+                                    "position": `${target.children().length}`,
+                                    "x_position":"null",
+                                    "y_position":"null",
+                                    "width":"null",
+                                    "height":"null",
+                                    "brand":"No Brand",
+                                    "is_in_carousel": "true",
+                                    "carousel_total_frames":"",
+                                    "carousel_frame_number":"",
+                                    "carousel_x_position":`${target.offset().left}`,
+                                    "carousel_y_position":`${target.offset().top}`,
+                                    "carousel_width":`${target.width()}`,
+                                    "carousel_height":`${target.height()}`,      
+                                    "screenshot":`${rand_num}.png`,      }
+            slot_blob_array.push(slot_blob_combo_obj)  ;
+            if(resolve_condition_counter<target_length){
+              resolve_condition_counter+=1;
+            }
+            else{resolve(slot_blob_array);} 
+          }
+         }).catch(function (error) {
+             console.error('oops, something went wrong!', error);
+         });
+    
+  //  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
+  } else if(request.content.is_in_carousel=="false"){
+               // slots for children
+    for(let i=0;i<target_length;i++){
+      
+     var node= target.children().get(i);
+       domtoimage.toBlob(node).then(function(blob){
+        console.log("resolve counter "+resolve_condition_counter+"index"+i);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function() {          
+        let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+        let slot_blob_combo_obj={slot:null,blobAsString:null};    
+          slot_blob_combo_obj.blobAsString = reader.result; 
+          slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
+                                  "section_type": `${request.content.section_type}`,
+                                  "position": `${i}`,
+                                  "x_position":`${target.children().eq(i).offset().left}`,
+                                  "y_position":`${target.children().eq(i).offset().top}`,
+                                  "width":`${target.children().eq(i).width()}`,
+                                  "height":`${target.children().eq(i).height()}`,
+                                  "screenshot":`${rand_num}.png`,
+                                  "brand":"No Brand"     }
+        slot_blob_array.push(slot_blob_combo_obj)  ;
+        if(resolve_condition_counter<target_length){
+          resolve_condition_counter+=1;
+        }
+        else{resolve(slot_blob_array);} 
+            
+        }
+        
+           }).catch(function (error) {
+               console.error('oops, something went wrong!', error);
+           });
+    }
+    // slot for the parent
+       domtoimage.toBlob(target.get(0)).then(function(blob){
+      const reader = new FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = function() {          
+      let rand_num=Math.floor(Math.random()*90000000) + 10000000;
+      let slot_blob_combo_obj={slot:null,blobAsString:null};    
+        slot_blob_combo_obj.blobAsString = reader.result; 
+        slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
+                                "section_type": `${request.content.section_type}`,
+                                "position": `${target.children().length}`,
+                                "x_position":`${target.offset().left}`,
+                                "y_position":`${target.offset().top}`,
+                                "width":`${target.width()}`,
+                                "height":`${target.height()}`,
+                                "screenshot":`${rand_num}.png`,
+                                "brand":"No Brand"  }
+      slot_blob_array.push(slot_blob_combo_obj)  ;
+      if(resolve_condition_counter<target_length){
+        resolve_condition_counter+=1;
+      }
+      else{resolve(slot_blob_array);} 
+      }
+      
+         
+         }).catch(function (error) {
+             console.error('oops, something went wrong!', error);
+         });
+  //  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
+  
+  }
+  }else if(target==null){
+    
+  
+  }else if(target==undefined){
+  
+  }
+  });
+  
 }

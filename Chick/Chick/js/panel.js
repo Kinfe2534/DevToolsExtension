@@ -54,7 +54,7 @@ backgroundPageConnection.postMessage({
         $(`#slot_click_${active_slot_group}`).click();
       backgroundPageConnection.postMessage({cmd:"make_with_click",content:slot_click_settings});}
     }
-    else if(request.cmd=="sending_with_click"){
+    else if(request.cmd=="sending_with_both"){
       if(`${$(`#replace_extend_checkbox_${request.content.slot_group_number}`).is(":checked")}`=="false"){
       let find_status=true;
       for(let i=0;i<slot_groups.length;i++){
@@ -91,22 +91,7 @@ backgroundPageConnection.postMessage({
   }
     
 }
-    }else if(request.cmd=="sending_with_class_or_id"){
-      let find_status=true;
-      for(let i=0;i<slot_groups.length;i++){
-        if(request.content.slot_group_number==slot_groups[i].slot_group_number){
-          slot_groups.splice(i,1,request.content);
-          find_status=false;
-          break;
-        }
-     
-    }
-    if(find_status){
-      slot_groups.push(request.content);
-    }
-      $(`#slots_identified_${request.content.slot_group_number}`).text(request.content.slots_array.length);
- 
-  }else if(request.cmd=="hover_count"){
+    }else if(request.cmd=="hover_count"){
     $(`#slots_hover_${active_slot_group}`).text(request.content); 
   }
     });
@@ -267,8 +252,13 @@ $("#slot_enter_0").on('click',function(){
 );
 // publish tab listeners
 $("#save").on('click',function(){ 
-  make_slot_groups_for_save();
-  backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
+ //make_slot_groups_for_save();
+  //backgroundPageConnection.postMessage({cmd:"save",content:json_file_obj});
+  var k=["abcd..."];
+ // var k= JSON.stringify(input,null,'\t');
+    var blob= new Blob([k],  {type: "text/plain;charset=utf-8"});
+    saveAs(blob,"Output_test.txt");
+
  }
 );
 $("#screenshot").on('click',function(){
