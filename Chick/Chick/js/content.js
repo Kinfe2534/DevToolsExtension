@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
 ///////////////////////////////////////////////////////////////////////
 $(window).on('resize',function(){
   chrome.runtime.sendMessage({cmd:"window_size_changed", 
-  resolution:`${$(window).width()}x${$(window).height()}`})
+  resolution:`${window.screen.width}x${window.screen.height}`})
 })
 // return a jquery object
 $(window).on('load', function() {
@@ -105,7 +105,7 @@ function show_hide_hover (){
                 $(this).addClass("hover");
                 $(this).children().addClass("hover_children");
                 $(this).on("click",this_callback_fun);
-                chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length+1},function(){});
+                chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).children().length},function(){});
 
       }, 
       // mouse leave listener
@@ -117,7 +117,7 @@ function show_hide_hover (){
                   $(this).parent().addClass("hover");
                   $(this).parent().children().addClass("hover_children");                 
                   $(this).parent().on("click",this_callback_fun);
-                  chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).parent().children().length+1},function(){});
+                  chrome.runtime.sendMessage({cmd:"hover_count",content: $(this).parent().children().length},function(){});
       }
   )
 
@@ -127,7 +127,7 @@ function make_settings(){
   url:`${window.location.href}`,
   Url_name:`${document.title}`,
   Partner_homepage_url:`${window.location.origin}`,
-  resolution:`${$(window).width()}x${$(window).height()}` }
+  resolution:`${window.screen.width}x${window.screen.height}` }
 }
 function make_slot_blob_array(request){
   return new Promise(function(resolve,reject){
@@ -173,12 +173,11 @@ function make_slot_blob_array(request){
                                     "carousel_width":`${target.children().eq(i).width()}`,
                                     "carousel_height":`${target.children().eq(i).height()}`,      
                                     "screenshot":`${rand_num}.png`,        }   
-          content.slot_blob_array.push(slot_blob_combo_obj)  ;
-          if(resolve_condition_counter<target_length){
-            resolve_condition_counter+=1;
-          }
-          else{resolve(content);}   
-            
+          content.slot_blob_array.push(slot_blob_combo_obj)  ;          
+          resolve_condition_counter+=1;
+          if(resolve_condition_counter==target_length){
+            resolve(content);
+          }            
           }
   
   
@@ -186,40 +185,7 @@ function make_slot_blob_array(request){
              console.error('oops, something went wrong!', error);
          });
     }
-    // slot for the parent
-        domtoimage.toBlob(target.get(0)).then(function(blob){
-        const reader = new FileReader();
-          reader.readAsDataURL(blob); 
-          reader.onloadend = function() {          
-          let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-          let slot_blob_combo_obj={slot:null,blobAsString:null};    
-            slot_blob_combo_obj.blobAsString = reader.result; 
-            slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
-                                    "section_type": `${request.content.section_type}`,
-                                    "position": `${target.children().length}`,
-                                    "x_position":"null",
-                                    "y_position":"null",
-                                    "width":"null",
-                                    "height":"null",
-                                    "brand":"No Brand",
-                                    "is_in_carousel": "true",
-                                    "carousel_total_frames":"",
-                                    "carousel_frame_number":"",
-                                    "carousel_x_position":`${target.offset().left}`,
-                                    "carousel_y_position":`${target.offset().top}`,
-                                    "carousel_width":`${target.width()}`,
-                                    "carousel_height":`${target.height()}`,      
-                                    "screenshot":`${rand_num}.png`,      }
-            content.slot_blob_array.push(slot_blob_combo_obj)  ;
-            if(resolve_condition_counter<target_length){
-              resolve_condition_counter+=1;
-            }
-            else{resolve(content);} 
-          }
-         }).catch(function (error) {
-             console.error('oops, something went wrong!', error);
-         });
-    
+   
   } else if(request.content.is_in_carousel=="false"){
                // slots for children
     for(let i=0;i<target_length;i++){
@@ -241,48 +207,18 @@ function make_slot_blob_array(request){
                                   "height":`${target.children().eq(i).height()}`,
                                   "screenshot":`${rand_num}.png`,
                                   "brand":"No Brand"     }
-      content.slot_blob_array.push(slot_blob_combo_obj)  ;
-        if(resolve_condition_counter<target_length){
-          resolve_condition_counter+=1;
-        }
-        else{resolve(content);} 
-            
+      content.slot_blob_array.push(slot_blob_combo_obj)  ;      
+      resolve_condition_counter+=1;
+        if(resolve_condition_counter==target_length){
+          resolve(content);
+        }            
         }
         
            }).catch(function (error) {
                console.error('oops, something went wrong!', error);
            });
     }
-    // slot for the parent
-       domtoimage.toBlob(target.get(0)).then(function(blob){
-      const reader = new FileReader();
-      reader.readAsDataURL(blob); 
-      reader.onloadend = function() {          
-      let rand_num=Math.floor(Math.random()*90000000) + 10000000;
-      let slot_blob_combo_obj={slot:null,blobAsString:null};    
-        slot_blob_combo_obj.blobAsString = reader.result; 
-        slot_blob_combo_obj.slot={  "name": `${request.content.name}`,
-                                "section_type": `${request.content.section_type}`,
-                                "position": `${target.children().length}`,
-                                "x_position":`${target.offset().left}`,
-                                "y_position":`${target.offset().top}`,
-                                "width":`${target.width()}`,
-                                "height":`${target.height()}`,
-                                "screenshot":`${rand_num}.png`,
-                                "brand":"No Brand"  }
-    content.slot_blob_array.push(slot_blob_combo_obj)  ;
-      if(resolve_condition_counter<target_length){
-        resolve_condition_counter+=1;
-      }
-      else{resolve(content);} 
-      }
       
-         
-         }).catch(function (error) {
-             console.error('oops, something went wrong!', error);
-         });
-  //  return {"slot_group_number":`${request.content.slot_group_number}`,"slots_array":temp_slots };
-  
   }
   }else if(target==null){
     
